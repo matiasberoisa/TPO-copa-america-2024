@@ -48,7 +48,7 @@ public class Carga {
             }
 
             Ciudad ciudad = new Ciudad(nombreCiudad, alojamiento, sedeCopa);
-            ciudades.insertarVertice(nombreCiudad);
+            ciudades.insertarVertice(ciudad);
         }
         return ciudades;
 
@@ -60,7 +60,6 @@ public class Carga {
         lector = new BufferedReader(archivoLectura);
         ArbolAVL equipos = new ArbolAVL();
         String linea, valor, nombrePais = "", director = "", grupo = "";
-        int i = 0;
         while ((linea = lector.readLine()) != null) {
             split = new StringTokenizer(linea, ";");
             for (int j = 0; j < 3; j++) {
@@ -81,7 +80,6 @@ public class Carga {
 
             Equipo equipo = new Equipo(nombrePais, director, grupo);
             equipos.insertar(equipo);
-            i++;
         }
         return equipos;
 
@@ -158,5 +156,6 @@ public class Carga {
         }
 
     }
+    // usar el fileWritter para cargar los puntos, goles a favor y en contra
 
 }
