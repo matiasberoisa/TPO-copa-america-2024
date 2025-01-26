@@ -1,5 +1,6 @@
 
 import java.io.*;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 import clasesTPO.*;
@@ -12,6 +13,7 @@ public class Carga {
     private FileWriter archivoEscritura;
     private BufferedWriter escritor;
     private StringTokenizer split;
+    private Scanner dato = new Scanner(System.in);
 
     // quitar el parametro CANT de cada metodo y retornar una estructura
     public GrafoEtiquetado cargaCiudades() throws IOException {
@@ -158,4 +160,28 @@ public class Carga {
     }
     // usar el fileWritter para cargar los puntos, goles a favor y en contra
 
+    public void escribirPartidos() throws IOException {
+        archivoEscritura = new FileWriter(
+                "C:\\Users\\mbero\\Downloads\\TPs\\EstructuraDeDatos\\estructuras\\estructuras\\listas\\ListaPartidos.txt");
+        escritor = new BufferedWriter(archivoEscritura);
+        String linea = "", eq1 = "", eq2 = "", instancia = "", ciudad = "", estadio = "";
+        int golE1 = 0, golE2 = 0;
+        System.out.println("escriba el equipo 1");
+        eq1 = dato.nextLine();
+        System.out.println("escriba el equipo 2");
+        eq2 = dato.nextLine();
+        System.out.println("escriba la instancia del partido");
+        instancia = dato.nextLine();
+        System.out.println("escriba la ciudad donde se jugo el partido");
+        ciudad = dato.nextLine();
+        System.out.println("escriba el estadio donde se jugo el partido");
+        estadio = dato.nextLine();
+        System.out.println("escriba los goles del equipo 1");
+        golE1 = dato.nextInt();
+        System.out.println("escriba los goles del equipo 2");
+        golE2 = dato.nextInt();
+        linea = eq1 + ";" + eq2 + ";" + instancia + ";" + ciudad + ";" + estadio + ";" + golE1 + ";" + golE2;
+        System.out.println(linea);
+        archivoEscritura.write(linea);
+    }
 }
