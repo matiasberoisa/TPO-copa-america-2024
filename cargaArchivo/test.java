@@ -16,5 +16,6 @@ public class test {
         cargar.cargaRutas(ciudades);
         equipos = cargar.cargaEquipos();
         System.out.println(equipos.toString());
+        System.out.println(mapa.toString());
     }
 }

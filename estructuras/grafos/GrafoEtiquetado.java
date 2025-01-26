@@ -382,6 +382,7 @@ public class GrafoEtiquetado {
                         caminoCorto);
             }
         }
+        System.out.println("tiempo del camino: " + menorTiempo[0]);
         return caminoCorto;
     }
 

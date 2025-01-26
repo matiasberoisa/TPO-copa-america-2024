@@ -34,7 +34,7 @@ public class Equipo implements Comparable {
         nombrePais = nn;
     }
 
-    public void setAlojamiento(String te) {
+    public void setTecnico(String te) {
         tecnico = te;
     }
 
@@ -88,5 +88,10 @@ public class Equipo implements Comparable {
         String cad = otroEquipo.toString();
         res = this.toString().compareTo(cad);
         return res;
+    }
+
+    public String datosEquipo() {
+        return "equipo: " + nombrePais + "\npuntos totales: " + puntosTotales + "\n goles a favor: " + golesFavor
+                + "\n goles en contra: " + golesContra + "\n diferencia de goles: " + diferenciaDeGoles();
     }
 }

@@ -1,9 +1,7 @@
 
 import java.io.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Scanner;
 import java.util.StringTokenizer;
 
 import clasesTPO.*;
@@ -13,12 +11,7 @@ import grafos.GrafoEtiquetado;
 public class Carga {
     private FileReader archivoLectura;
     private BufferedReader lector;
-    private FileWriter archivoEscritura;
     private StringTokenizer split;
-    private Scanner dato = new Scanner(System.in);
-    private ArrayList<Ciudad> arregloCiudades = new ArrayList<Ciudad>();
-    private ArrayList<Equipo> arregloEquipos = new ArrayList<Equipo>();
-    private ArrayList<Partido> arregloPartidos = new ArrayList<Partido>();
 
     public GrafoEtiquetado cargaCiudades() throws IOException {
         archivoLectura = new FileReader(
@@ -49,8 +42,7 @@ public class Carga {
                 }
             }
 
-            Ciudad ciudad = new Ciudad(nombreCiudad, alojamiento, sedeCopa);
-            arregloCiudades.add(ciudad);
+            Ciudad ciudad = new Ciudad(nombreCiudad.toLowerCase(), alojamiento, sedeCopa);
             ciudades.insertarVertice(ciudad);
         }
         return ciudades;
@@ -81,8 +73,7 @@ public class Carga {
                 }
             }
 
-            Equipo equipo = new Equipo(nombrePais, director, grupo);
-            arregloEquipos.add(equipo);
+            Equipo equipo = new Equipo(nombrePais.toUpperCase(), director.toLowerCase(), grupo.toUpperCase());
             equipos.insertar(equipo);
         }
         return equipos;
@@ -125,8 +116,8 @@ public class Carga {
                     golE2 = Integer.parseInt(valor);
                 }
             }
-            Partido partido = new Partido(eq1, eq2, instancia, ciudad, estadio, golE1, golE2);
-            arregloPartidos.add(partido);
+            Partido partido = new Partido(eq1.toUpperCase(), eq2.toUpperCase(), instancia, ciudad, estadio, golE1,
+                    golE2);
             mapa.put(partido.getClavePartido(), partido);
         }
         return mapa;
@@ -155,34 +146,9 @@ public class Carga {
                     tiempoEstimado = Integer.parseInt(valor);
                 }
             }
-            ciudades.insertarArco(origen, destino, tiempoEstimado);
+            ciudades.insertarArco(origen.toLowerCase(), destino.toLowerCase(), tiempoEstimado);
         }
 
     }
     // usar el fileWritter para cargar el archivo LOG.txt
-
-    public void escribirPartidos() throws IOException {
-        archivoEscritura = new FileWriter(
-                "LOG.txt");
-        String linea = "", eq1 = "", eq2 = "", instancia = "", ciudad = "", estadio = "";
-        int golE1 = 0, golE2 = 0;
-        System.out.println("escriba el equipo 1");
-        eq1 = dato.nextLine();
-        System.out.println("escriba el equipo 2");
-        eq2 = dato.nextLine();
-        System.out.println("escriba la instancia del partido");
-        instancia = dato.nextLine();
-        System.out.println("escriba la ciudad donde se jugo el partido");
-        ciudad = dato.nextLine();
-        System.out.println("escriba el estadio donde se jugo el partido");
-        estadio = dato.nextLine();
-        System.out.println("escriba los goles del equipo 1");
-        golE1 = dato.nextInt();
-        System.out.println("escriba los goles del equipo 2");
-        golE2 = dato.nextInt();
-        linea = eq1 + ";" + eq2 + ";" + instancia + ";" + ciudad + ";" + estadio + ";" + golE1 + ";" + golE2;
-        System.out.println(linea);
-        archivoEscritura.write(linea + "\n");
-        archivoEscritura.close();
-    }
 }
