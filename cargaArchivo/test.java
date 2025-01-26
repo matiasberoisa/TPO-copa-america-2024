@@ -1,15 +1,20 @@
 import java.io.IOException;
-import conjuntistas.TablaHash;
+import java.util.HashMap;
+
+import clasesTPO.Partido;
+import conjuntistas.ArbolAVL;
 import grafos.GrafoEtiquetado;
 
 public class test {
-    @SuppressWarnings({ "unused" })
     public static void main(String[] args) throws IOException {
         GrafoEtiquetado ciudades = new GrafoEtiquetado();
         Carga cargar = new Carga();
-        TablaHash mapa = new TablaHash();
+        HashMap<Integer, Partido> mapa = new HashMap<Integer, Partido>();
+        ArbolAVL equipos = new ArbolAVL();
         mapa = cargar.cargaPartidos();
         ciudades = cargar.cargaCiudades();
-        System.out.println(mapa.listar());
+        cargar.cargaRutas(ciudades);
+        equipos = cargar.cargaEquipos();
+        System.out.println(equipos.toString());
     }
 }

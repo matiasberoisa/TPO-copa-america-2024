@@ -38,4 +38,16 @@ public class Ciudad {
     public String toString() {
         return nombre + ";" + alojamiento + ";" + sede;
     }
+
+    public void cambiarSede() {
+        sede = !sede;
+    }
+
+    public void cambiarAlojamiento() {
+        alojamiento = !alojamiento;
+    }
+
+    public boolean equals(Object elem) {
+        return nombre.equals(elem);
+    }
 }

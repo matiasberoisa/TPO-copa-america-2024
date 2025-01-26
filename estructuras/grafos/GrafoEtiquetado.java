@@ -601,4 +601,7 @@ public class GrafoEtiquetado {
         return listadoCaminos;
     }
 
+    public Object obtenerVertice(Object nombrePais) {
+        return buscarVertice(inicio, nombrePais);
+    }
 }

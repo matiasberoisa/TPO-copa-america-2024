@@ -8,15 +8,26 @@ public class Partido {
     private String estadio;
     private int golesE1;
     private int golesE2;
+    private ClavePartido clave;
 
     public Partido(String e1, String e2, String ins, String ci, String es, int gol1, int gol2) {
-        eq1 = e1;
-        eq2 = e2;
+        if (e1.compareTo(e2) < 0) {
+            clave = new ClavePartido(e1, e2);
+            eq1 = e1;
+            eq2 = e2;
+            golesE1 = gol1;
+            golesE2 = gol2;
+        } else {
+            clave = new ClavePartido(e2, e1);
+            eq1 = e2;
+            eq2 = e1;
+            golesE1 = gol2;
+            golesE2 = gol1;
+        }
         instancia = ins;
         ciudad = ci;
         estadio = es;
-        golesE1 = gol1;
-        golesE2 = gol2;
+
     }
 
     public String getEquipo1() {
@@ -77,5 +88,19 @@ public class Partido {
 
     public String toString() {
         return eq1 + ";" + eq2 + ";" + instancia + ";" + ciudad + ";" + estadio + ";" + golesE1 + ";" + golesE2;
+    }
+
+    public String resultado() {
+        String cad;
+
+        cad = clave.getEquipoUno() + " [" + golesE1 + " - " + golesE2 + "] " + clave.getEquipoDos()
+                + " INSTANCIA: " + instancia;
+
+        return cad;
+    }
+
+    public int getClavePartido() {
+        int hash = clave.hashCode();
+        return hash;
     }
 }

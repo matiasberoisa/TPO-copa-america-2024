@@ -1,14 +1,21 @@
 package clasesTPO;
 
-public class Equipo {
+@SuppressWarnings("rawtypes")
+public class Equipo implements Comparable {
     private String nombrePais;
     private String tecnico;
     private String grupoInicial;
+    private int puntosTotales;
+    private int golesFavor;
+    private int golesContra;
 
     public Equipo(String pa, String tec, String gru) {
         nombrePais = pa;
         tecnico = tec;
         grupoInicial = gru;
+        puntosTotales = 0;
+        golesFavor = 0;
+        golesContra = 0;
     }
 
     public String getPais() {
@@ -37,5 +44,49 @@ public class Equipo {
 
     public String toString() {
         return nombrePais + ";" + tecnico + ";" + grupoInicial;
+    }
+
+    public int diferenciaDeGoles() {
+        return (golesFavor - golesContra);
+    }
+
+    public int getPuntos() {
+        return this.puntosTotales;
+    }
+
+    public void setPuntos(int p) {
+        puntosTotales = p;
+    }
+
+    public void setGolesAFavor(int F) {
+        golesFavor = F;
+    }
+
+    public void setGolesEnContra(int c) {
+        golesContra = c;
+    }
+
+    public boolean equals(Object elem) {
+
+        return nombrePais.equals(elem);
+    }
+
+    public void actualizarEquipo(int golFav, int golContra) {
+        if (golFav == golContra) {
+            puntosTotales++;
+        } else {
+            if (golFav > golContra) {
+                puntosTotales += 3;
+            }
+        }
+        golesFavor = golesFavor + golFav;
+        golesContra = golesContra + golContra;
+    }
+
+    public int compareTo(Object otroEquipo) {
+        int res;
+        String cad = otroEquipo.toString();
+        res = this.toString().compareTo(cad);
+        return res;
     }
 }

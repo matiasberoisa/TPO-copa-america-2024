@@ -12,13 +12,13 @@ import lineales.*;
  */
 public class TablaHash {
 
-    private int tamaño = 4;
+    private int tamaño = 100;
     private int cantidad = 0;
     private Nodo[] hash;
 
     public TablaHash() {
         cantidad = 0;
-        hash = new Nodo[tamaño];
+        hash = new Nodo[tamaño - 1];
     }
 
     public boolean pertenece(Object elem) {

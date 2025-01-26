@@ -2,12 +2,12 @@
 import java.io.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
 import clasesTPO.*;
 import conjuntistas.ArbolAVL;
-import conjuntistas.TablaHash;
 import grafos.GrafoEtiquetado;
 
 public class Carga {
@@ -19,9 +19,7 @@ public class Carga {
     private ArrayList<Ciudad> arregloCiudades = new ArrayList<Ciudad>();
     private ArrayList<Equipo> arregloEquipos = new ArrayList<Equipo>();
     private ArrayList<Partido> arregloPartidos = new ArrayList<Partido>();
-    private ArrayList<Ruta> arregloRutas = new ArrayList<Ruta>();
 
-    // quitar el parametro CANT de cada metodo y retornar una estructura
     public GrafoEtiquetado cargaCiudades() throws IOException {
         archivoLectura = new FileReader(
                 "C:\\Users\\mbero\\Downloads\\TPs\\EstructuraDeDatos\\estructuras\\estructuras\\listas\\ListaCiudades.txt");
@@ -39,25 +37,21 @@ public class Carga {
                             nombreCiudad = valor;
                             break;
                         case 1:
-                            if (valor.equals("TRUE")) {
+                            if (valor.equalsIgnoreCase("true")) {
                                 alojamiento = true;
-                            } else {
-                                alojamiento = false;
                             }
                             break;
                     }
                 } else {
-                    if (valor.equals("TRUE")) {
+                    if (valor.equalsIgnoreCase("true")) {
                         sedeCopa = true;
-                    } else {
-                        sedeCopa = false;
                     }
                 }
             }
 
             Ciudad ciudad = new Ciudad(nombreCiudad, alojamiento, sedeCopa);
             arregloCiudades.add(ciudad);
-            ciudades.insertarVertice(nombreCiudad);
+            ciudades.insertarVertice(ciudad);
         }
         return ciudades;
 
@@ -71,7 +65,6 @@ public class Carga {
         String linea, valor, nombrePais = "", director = "", grupo = "";
         while ((linea = lector.readLine()) != null) {
             split = new StringTokenizer(linea, ";");
-
             for (int j = 0; j < 3; j++) {
                 valor = (String) split.nextElement();
                 if (split.hasMoreElements()) {
@@ -90,21 +83,20 @@ public class Carga {
 
             Equipo equipo = new Equipo(nombrePais, director, grupo);
             arregloEquipos.add(equipo);
-            equipos.insertar(nombrePais);
+            equipos.insertar(equipo);
         }
         return equipos;
 
     }
 
-    public TablaHash cargaPartidos() throws IOException {
+    public HashMap<Integer, Partido> cargaPartidos() throws IOException {
         archivoLectura = new FileReader(
                 "C:\\Users\\mbero\\Downloads\\TPs\\TPO-copa-america-2024\\cargaArchivo\\clasesTPO\\archivos\\listaPartidos.txt");
         lector = new BufferedReader(archivoLectura);
-        TablaHash mapa = new TablaHash();
+        HashMap<Integer, Partido> mapa = new HashMap<Integer, Partido>();
         String linea, eq1 = "", eq2 = "", instancia = "", ciudad = "", estadio = "", valor = "";
         int golE1 = 0, golE2 = 0;
         while ((linea = lector.readLine()) != null) {
-            System.out.println(linea);
             split = new StringTokenizer(linea, ";");
             for (int j = 0; j < 7; j++) {
                 valor = (String) split.nextElement();
@@ -135,7 +127,7 @@ public class Carga {
             }
             Partido partido = new Partido(eq1, eq2, instancia, ciudad, estadio, golE1, golE2);
             arregloPartidos.add(partido);
-            mapa.insertar(partido);
+            mapa.put(partido.getClavePartido(), partido);
         }
         return mapa;
 
@@ -163,9 +155,7 @@ public class Carga {
                     tiempoEstimado = Integer.parseInt(valor);
                 }
             }
-            Ruta ruta = new Ruta(origen, destino, tiempoEstimado);
             ciudades.insertarArco(origen, destino, tiempoEstimado);
-            arregloRutas.add(ruta);
         }
 
     }
