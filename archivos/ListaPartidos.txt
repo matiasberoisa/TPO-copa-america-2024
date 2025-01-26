@@ -18,3 +18,6 @@ ARGENTINA;PERU;grupos;Mercedes-Benz;Austin;2;0
 CHILE;CANADA;GRUPOS;Inter&Co;LAS VEGAS;0;0
 ARGENTINA;ECUADOR;CUARTOS DE FINAL;Metlife Stadium;Nueva York;1;1
 URUGUAY;BRASIL;CUARTOS DE FINAL;Hard Rock;Chicago;0;0
+venezuela;CANADA;CUARTOS DE FINAL;Metlife Stadium;Nueva York;1;1
+ARGENTINA;canada;SEMIFINAL;Hard Rock;Chicago;2;0
+uruguay;COLOMBIA;semifinal;Metlife Stadium;Nueva York;0;1

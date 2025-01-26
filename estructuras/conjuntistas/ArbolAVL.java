@@ -4,7 +4,6 @@
  */
 package conjuntistas;
 
-import clasesTPO.Equipo;
 import lineales.Lista;
 
 public class ArbolAVL {
@@ -16,9 +15,8 @@ public class ArbolAVL {
     }
 
     @SuppressWarnings("rawtypes")
-    public boolean insertar(Equipo unEquipo) {
+    public boolean insertar(Comparable elem) {
         boolean exito = true;
-        Comparable elem = unEquipo.getPais();
         if (this.raiz == null) {
             this.raiz = new NodoAVL(elem, null, null);
         } else {

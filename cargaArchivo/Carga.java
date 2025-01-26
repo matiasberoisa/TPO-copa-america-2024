@@ -1,19 +1,25 @@
 
 import java.io.*;
+
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
 import clasesTPO.*;
 import conjuntistas.ArbolAVL;
+import conjuntistas.TablaHash;
 import grafos.GrafoEtiquetado;
 
 public class Carga {
     private FileReader archivoLectura;
     private BufferedReader lector;
     private FileWriter archivoEscritura;
-    private BufferedWriter escritor;
     private StringTokenizer split;
     private Scanner dato = new Scanner(System.in);
+    private ArrayList<Ciudad> arregloCiudades = new ArrayList<Ciudad>();
+    private ArrayList<Equipo> arregloEquipos = new ArrayList<Equipo>();
+    private ArrayList<Partido> arregloPartidos = new ArrayList<Partido>();
+    private ArrayList<Ruta> arregloRutas = new ArrayList<Ruta>();
 
     // quitar el parametro CANT de cada metodo y retornar una estructura
     public GrafoEtiquetado cargaCiudades() throws IOException {
@@ -50,7 +56,8 @@ public class Carga {
             }
 
             Ciudad ciudad = new Ciudad(nombreCiudad, alojamiento, sedeCopa);
-            ciudades.insertarVertice(ciudad);
+            arregloCiudades.add(ciudad);
+            ciudades.insertarVertice(nombreCiudad);
         }
         return ciudades;
 
@@ -64,6 +71,7 @@ public class Carga {
         String linea, valor, nombrePais = "", director = "", grupo = "";
         while ((linea = lector.readLine()) != null) {
             split = new StringTokenizer(linea, ";");
+
             for (int j = 0; j < 3; j++) {
                 valor = (String) split.nextElement();
                 if (split.hasMoreElements()) {
@@ -81,20 +89,22 @@ public class Carga {
             }
 
             Equipo equipo = new Equipo(nombrePais, director, grupo);
-            equipos.insertar(equipo);
+            arregloEquipos.add(equipo);
+            equipos.insertar(nombrePais);
         }
         return equipos;
 
     }
 
-    public Partido[] cargaPartidos(int cant) throws IOException {
+    public ArrayList<Partido> cargaPartidos() throws IOException {
         archivoLectura = new FileReader(
-                "C:\\Users\\mbero\\Downloads\\TPs\\EstructuraDeDatos\\estructuras\\estructuras\\listas\\ListaPartidos.txt");
+                "C:\\Users\\mbero\\Downloads\\TPs\\EstructuraDeDatos\\estructuras\\estructuras\\listas\\listaPartidos.txt");
         lector = new BufferedReader(archivoLectura);
-        Partido[] partidos = new Partido[cant];
+        TablaHash mapa = new TablaHash();
         String linea, eq1 = "", eq2 = "", instancia = "", ciudad = "", estadio = "", valor = "";
-        int i = 0, golE1 = 0, golE2 = 0;
+        int golE1 = 0, golE2 = 0;
         while ((linea = lector.readLine()) != null) {
+            System.out.println(linea);
             split = new StringTokenizer(linea, ";");
             for (int j = 0; j < 7; j++) {
                 valor = (String) split.nextElement();
@@ -123,12 +133,11 @@ public class Carga {
                     golE2 = Integer.parseInt(valor);
                 }
             }
-
             Partido partido = new Partido(eq1, eq2, instancia, ciudad, estadio, golE1, golE2);
-            partidos[i] = partido;
-            i++;
+            arregloPartidos.add(partido);
+            mapa.insertar(partido);
         }
-        return partidos;
+        return arregloPartidos;
 
     }
 
@@ -154,16 +163,17 @@ public class Carga {
                     tiempoEstimado = Integer.parseInt(valor);
                 }
             }
+            Ruta ruta = new Ruta(origen, destino, tiempoEstimado);
             ciudades.insertarArco(origen, destino, tiempoEstimado);
+            arregloRutas.add(ruta);
         }
 
     }
-    // usar el fileWritter para cargar los puntos, goles a favor y en contra
+    // usar el fileWritter para cargar el archivo LOG.txt
 
     public void escribirPartidos() throws IOException {
         archivoEscritura = new FileWriter(
-                "C:\\Users\\mbero\\Downloads\\TPs\\EstructuraDeDatos\\estructuras\\estructuras\\listas\\ListaPartidos.txt");
-        escritor = new BufferedWriter(archivoEscritura);
+                "LOG.txt");
         String linea = "", eq1 = "", eq2 = "", instancia = "", ciudad = "", estadio = "";
         int golE1 = 0, golE2 = 0;
         System.out.println("escriba el equipo 1");
@@ -182,6 +192,7 @@ public class Carga {
         golE2 = dato.nextInt();
         linea = eq1 + ";" + eq2 + ";" + instancia + ";" + ciudad + ";" + estadio + ";" + golE1 + ";" + golE2;
         System.out.println(linea);
-        archivoEscritura.write(linea);
+        archivoEscritura.write(linea + "\n");
+        archivoEscritura.close();
     }
 }
