@@ -96,9 +96,9 @@ public class Carga {
 
     }
 
-    public ArrayList<Partido> cargaPartidos() throws IOException {
+    public TablaHash cargaPartidos() throws IOException {
         archivoLectura = new FileReader(
-                "C:\\Users\\mbero\\Downloads\\TPs\\EstructuraDeDatos\\estructuras\\estructuras\\listas\\listaPartidos.txt");
+                "C:\\Users\\mbero\\Downloads\\TPs\\TPO-copa-america-2024\\cargaArchivo\\clasesTPO\\archivos\\listaPartidos.txt");
         lector = new BufferedReader(archivoLectura);
         TablaHash mapa = new TablaHash();
         String linea, eq1 = "", eq2 = "", instancia = "", ciudad = "", estadio = "", valor = "";
@@ -137,7 +137,7 @@ public class Carga {
             arregloPartidos.add(partido);
             mapa.insertar(partido);
         }
-        return arregloPartidos;
+        return mapa;
 
     }
 
