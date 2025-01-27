@@ -79,6 +79,7 @@ public class menuCopaAmerica {
     public static void verCiudades() {
         String opcion = "", nombreCiudad = "", valorSede = "", valorAlojamiento = "", letra = "", textoLog = "";
         boolean sede = false, alojamiento = false, stop = false;
+        Ciudad laCiudad;
         do {
             System.out.println("1. si desea agregar una ciudad");
             System.out.println("2. si desea eliminar una ciudad");
@@ -90,17 +91,17 @@ public class menuCopaAmerica {
                     System.out.println("ingrese el nombre de la ciudad:");
                     nombreCiudad = dato.nextLine();
                     nombreCiudad = dato.nextLine().toLowerCase();
-                    if (ciudades.existeVertice(nombreCiudad)) {
+                    if (ciudades.existeVertice(new Ciudad(nombreCiudad))) {
                         System.out.println("la ciudad " + nombreCiudad + " ya se encuentra cargada");
                     } else {
                         System.out.println("la ciudad " + nombreCiudad + " tiene alojamiento? ingrese S/N");
                         valorAlojamiento = dato.next();
-                        if (valorAlojamiento.equals("S")) {
+                        if (valorAlojamiento.equalsIgnoreCase("s")) {
                             alojamiento = true;
                         }
                         System.out.println("la ciudad " + nombreCiudad + " es sede de la copa? ingrese S/N");
                         valorSede = dato.next();
-                        if (valorSede.equals("S")) {
+                        if (valorSede.equalsIgnoreCase("s")) {
                             sede = true;
                         }
                         Ciudad nuCiudad = new Ciudad(nombreCiudad, alojamiento, sede);
@@ -114,8 +115,8 @@ public class menuCopaAmerica {
                     System.out.println("ingrese el nombre de la ciudad:");
                     nombreCiudad = dato.nextLine();
                     nombreCiudad = dato.nextLine().toLowerCase();
-                    if (ciudades.existeVertice(nombreCiudad)) {
-                        ciudades.eliminarVertice(nombreCiudad);
+                    if (ciudades.existeVertice(new Ciudad(nombreCiudad))) {
+                        ciudades.eliminarVertice(new Ciudad(nombreCiudad));
                         System.out.println("la ciudad " + nombreCiudad + " se ha eliminado con exito.");
                         textoLog = "se elimino la ciudad " + nombreCiudad;
                         actualizarLog(textoLog);
@@ -127,7 +128,7 @@ public class menuCopaAmerica {
                     System.out.println("ingrese el nombre de la ciudad:");
                     nombreCiudad = dato.nextLine();
                     nombreCiudad = dato.nextLine().toLowerCase();
-                    Ciudad laCiudad = (Ciudad) ciudades.obtenerVertice(nombreCiudad);
+                    laCiudad = (Ciudad) ciudades.obtenerVertice(new Ciudad(nombreCiudad));
                     if (laCiudad != null) {
                         System.out.println("que desea modificar de la ciudad " + nombreCiudad + "?");
                         System.out.println(
@@ -135,10 +136,10 @@ public class menuCopaAmerica {
                         letra = dato.next();
                         switch (letra) {
                             case "1":
-                                laCiudad.cambiarSede();
+                                laCiudad.cambiarAlojamiento();
                                 break;
                             case "2":
-                                laCiudad.cambiarAlojamiento();
+                                laCiudad.cambiarSede();
                                 break;
                             case "3":
                                 laCiudad.cambiarSede();
@@ -150,6 +151,7 @@ public class menuCopaAmerica {
                         }
                         textoLog = "se modifico de la ciudad " + nombreCiudad + "la opcion " + letra;
                         actualizarLog(textoLog);
+                        System.out.println("se modifico de la ciudad " + nombreCiudad + " la opcion " + letra);
                     } else {
                         System.out.println("la ciudad " + nombreCiudad + " NO se encuentra cargada");
                     }
@@ -177,6 +179,7 @@ public class menuCopaAmerica {
             switch (opcion) {
                 case "1": // agregar un equipo
                     System.out.println("ingrese el nombre del pais:");
+                    nombrePais = dato.nextLine();
                     nombrePais = dato.nextLine().toUpperCase();
                     if (equipos.pertenece(new Equipo(nombrePais))) {
                         System.out.println("el pais " + nombrePais + " ya se encuentra cargada");
@@ -189,10 +192,12 @@ public class menuCopaAmerica {
                         equipos.insertar(nuEquipo);
                         textoLog = "se inserto el equipo " + nombrePais;
                         actualizarLog(textoLog);
+                        System.out.println("el pais " + nombrePais + " se ha agregado con exito.");
                     }
                     break;
                 case "2": // eliminar un equipo
                     System.out.println("ingrese el nombre del pais:");
+                    nombrePais = dato.nextLine();
                     nombrePais = dato.nextLine().toUpperCase();
                     if (equipos.pertenece(new Equipo(nombrePais))) {
                         equipos.eliminar(new Equipo(nombrePais));
@@ -230,6 +235,7 @@ public class menuCopaAmerica {
                         }
                         textoLog = "se modifico del equipo " + nombrePais + " la opcion " + opcion;
                         actualizarLog(textoLog);
+                        System.out.println("se modifico del equipo " + nombrePais + " la opcion " + opcion);
                     } else {
                         System.out.println("el pais " + nombrePais + " NO se encuentra cargado");
                     }
@@ -253,18 +259,14 @@ public class menuCopaAmerica {
         eq1 = dato.nextLine().toUpperCase();
         if (equipos.pertenece(new Equipo(eq1))) {
             System.out.println("ingrese el nombre del equipo 2:");
-            eq2 = dato.nextLine();
             eq2 = dato.nextLine().toUpperCase();
             if (equipos.pertenece(new Equipo(eq2))) {
                 System.out.println("partido entre " + eq1 + " y " + eq2);
                 System.out.println("ingrese la instancia del partido");
-                instancia = dato.nextLine();
                 instancia = dato.nextLine().toUpperCase();
                 System.out.println("ingrese la ciudad donde se jugo el partido");
-                ciudad = dato.nextLine();
                 ciudad = dato.nextLine().toLowerCase();
                 System.out.println("ingrese el estadio donde se jugo el partido");
-                estadio = dato.nextLine();
                 estadio = dato.nextLine().toLowerCase();
                 System.out.println("Ingrese la cantidad de goles del equipo 1: " + eq1);
                 golesE1 = dato.nextInt();
@@ -291,8 +293,8 @@ public class menuCopaAmerica {
         String pais = "", opcion = "", min = "", max = "";
         boolean stop = false;
         do {
-            System.out.println("1. obtiene el camino de menor tiempo");
-            System.out.println("2. obtiene el camino mas corto");
+            System.out.println("1. buscar los datos de un pais");
+            System.out.println("2. mostrar una lista de equipos dentro de un rango alfabeticamente");
             System.out.println("3. para salir");
             opcion = dato.next();
             switch (opcion) {
@@ -309,9 +311,9 @@ public class menuCopaAmerica {
                     break;
                 case "2":
                     System.out.println("ingrese la cadena minima de la lista:");
-                    min = dato.next();
+                    min = dato.next().toUpperCase();
                     System.out.println("ingrese la cadena maxima de la lista:");
-                    max = dato.next();
+                    max = dato.next().toUpperCase();
                     System.out.println(equipos.listarPorRango(min, max));
                     break;
                 case "3":
@@ -356,14 +358,17 @@ public class menuCopaAmerica {
     }
 
     public static void consultaViajes() {
-        String origen = "", destino = "", opcion = "", ciudadEvitada = "", ciudad = "", filtro = "";
+        String origen = "", destino = "", opcion = "", evitada = "", ciudad = "", filtro = "";
         boolean stop = false;
+        Ciudad ciudadOrigen, ciudadDestino, ciudadEvitada, ciudadIncluida;
         System.out.println("ingrese la ciudad de origen");
         origen = dato.nextLine();
         origen = dato.nextLine().toLowerCase();
         System.out.println("ingrese la ciudad de destino");
         destino = dato.nextLine().toLowerCase();
-        if (ciudades.existeVertice(origen) && ciudades.existeVertice(destino)) {
+        ciudadOrigen = new Ciudad(origen);
+        ciudadDestino = new Ciudad(destino);
+        if (ciudades.existeVertice(ciudadOrigen) && ciudades.existeVertice(ciudadDestino)) {
             do {
                 System.out.println("1. obtiene el camino de menor tiempo");
                 System.out.println("2. obtiene el camino mas corto");
@@ -374,23 +379,25 @@ public class menuCopaAmerica {
                 switch (opcion) {
                     case "1":
                         System.out.println("camino desde " + origen + " hasta " + destino + " en menor tiempo:");
-                        System.out.println(ciudades.caminoMenorTiempo(origen, destino));
+                        System.out.println(ciudades.caminoMenorTiempo(ciudadOrigen, ciudadDestino));
                         break;
                     case "2":
                         System.out.println("camino mas corto desde " + origen + " hasta " + destino + ":");
-                        System.out.println(ciudades.caminoMasCorto(origen, destino));
+                        System.out.println(ciudades.caminoMasCorto(ciudadOrigen, ciudadDestino));
                         break;
                     case "3":
                         System.out.println("ingrese la ciudad que desea evitar:");
-                        ciudadEvitada = dato.nextLine();
-                        ciudadEvitada = dato.nextLine().toLowerCase();
+                        evitada = dato.nextLine();
+                        evitada = dato.nextLine().toLowerCase();
                         System.out.println("camino mas corto desde " + origen + " hasta " + destino + " sin pasar por "
-                                + ciudadEvitada + ":");
-                        System.out.println(ciudades.caminoMasCortoSinCiudad(origen, destino, ciudadEvitada));
+                                + evitada + ":");
+                        ciudadEvitada = new Ciudad(evitada);
+                        System.out
+                                .println(ciudades.caminoMasCortoSinCiudad(ciudadOrigen, ciudadDestino, ciudadEvitada));
                         break;
                     case "4":
                         System.out.println("todos los posibles caminos desde " + origen + " hasta " + destino + ":");
-                        System.out.println(ciudades.todosLosCaminos(origen, destino, null));
+                        System.out.println(ciudades.todosLosCaminos(ciudadOrigen, ciudadDestino, null));
                         System.out.println("desea filtrar los caminos? S/N");
                         filtro = dato.next();
                         if (filtro.equals("S")) {
@@ -398,13 +405,15 @@ public class menuCopaAmerica {
                             filtro = dato.next().toUpperCase();
                             switch (filtro) {
                                 case "A":
-                                    System.out.println(ciudades.todosLosCaminos(origen, destino, "A"));
+                                    System.out.println(ciudades.todosLosCaminos(ciudadOrigen, ciudadDestino, "A"));
                                     break;
                                 case "C":
                                     System.out.println("ingrese ciudad por donde desea pasar?");
                                     ciudad = dato.nextLine();
                                     ciudad = dato.nextLine().toLowerCase();
-                                    System.out.println(ciudades.todosLosCaminos(origen, destino, ciudad));
+                                    ciudadIncluida = new Ciudad(ciudad);
+                                    System.out.println(
+                                            ciudades.todosLosCaminos(ciudadOrigen, ciudadDestino, ciudadIncluida));
                                     break;
 
                                 default:
@@ -453,7 +462,9 @@ public class menuCopaAmerica {
         System.out.println(equipos.toString());
         System.out.println(
                 "//////////////////////////////////////////////////////////estructura de partidos//////////////////////////////////////////////////////////");
-        System.out.println(partidos.toString());
+        for (Integer indice : partidos.keySet()) {
+            System.out.println(indice + ") " + partidos.get(indice).toString());
+        }
     }
 
     public static void actualizarLog(String cad) {

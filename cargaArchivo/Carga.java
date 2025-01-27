@@ -151,7 +151,9 @@ public class Carga {
                     tiempoEstimado = Integer.parseInt(valor);
                 }
             }
-            ciudades.insertarArco(origen.toLowerCase(), destino.toLowerCase(), tiempoEstimado);
+            Ciudad ciudadOrigen = new Ciudad(origen.toLowerCase());
+            Ciudad ciudadDestino = new Ciudad(destino.toLowerCase());
+            ciudades.insertarArco(ciudadOrigen, ciudadDestino, tiempoEstimado);
         }
 
     }

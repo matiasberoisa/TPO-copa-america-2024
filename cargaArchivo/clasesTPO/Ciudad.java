@@ -11,6 +11,12 @@ public class Ciudad {
         sede = se;
     }
 
+    public Ciudad(String nn) {
+        nombre = nn;
+        alojamiento = false;
+        sede = false;
+    }
+
     public String getNombre() {
         return this.nombre;
     }
@@ -47,8 +53,9 @@ public class Ciudad {
         alojamiento = !alojamiento;
     }
 
-    public boolean equals(Object elem) {
-        return nombre.equals(elem);
+    public boolean equals(Object otroPais) {
+        Ciudad laCiudad = (Ciudad) otroPais;
+        return nombre.equals(laCiudad.nombre);
     }
 
 }

@@ -160,7 +160,7 @@ public class GrafoEtiquetado {
         boolean encontrado = false;
         NodoVert nodoBuscado = buscarVertice(this.inicio, eliminado), nodoSiguiente = this.inicio.getSigVertice(),
                 anterior = this.inicio;
-        NodoAdy siguiente, nuevoInicio;
+        NodoAdy siguiente;
         if (!esVacio() && nodoBuscado != null) {
             encontrado = true;
             siguiente = nodoBuscado.getPrimerAdy();
@@ -168,13 +168,13 @@ public class GrafoEtiquetado {
                 if (this.inicio.getSigVertice() == null) {
                     vaciar();
                 } else {
-                    nuevoInicio = siguiente;
+
                     while (siguiente != null) {
                         eliminarEnlace(nodoBuscado, siguiente.getVertice(), siguiente.getEtiqueta());
                         eliminarEnlace(siguiente.getVertice(), nodoBuscado, siguiente.getEtiqueta());
                         siguiente = siguiente.getSigAdyacente();
                     }
-                    this.inicio = nuevoInicio.getVertice();
+                    this.inicio = this.inicio.getSigVertice();
                 }
             } else {
                 while (siguiente != null) {
@@ -379,6 +379,7 @@ public class GrafoEtiquetado {
             if (origen.equals(destino)) {
                 caminoCorto.insertar(destino, caminoCorto.longitud() + 1);
             } else {
+                System.out.println(nodoDestino.getElem());
                 caminoCorto = caminoMenorTiempoDesde(nodoOrigen, nodoDestino, tiempo, menorTiempo, listaVisitados,
                         caminoCorto);
             }
@@ -496,7 +497,7 @@ public class GrafoEtiquetado {
     private Lista todosCaminos(NodoVert nodoOrigen, NodoVert nodoDestino, Lista listaVisitados, Lista camino,
             Lista listadoCaminos) {
         if (nodoOrigen != null) {
-            int posDestino = 0, posElemento = 0;
+            int posDestino = 0, posicion = 0;
             camino.insertar(nodoOrigen.getElem(), camino.longitud() + 1);
             listaVisitados.insertar(nodoOrigen.getElem(), listaVisitados.longitud() + 1);
             if (nodoOrigen.getElem().equals(nodoDestino.getElem())) {
@@ -504,6 +505,12 @@ public class GrafoEtiquetado {
             } else {
                 NodoAdy siguiente = nodoOrigen.getPrimerAdy();
                 while (siguiente != null) {
+                    System.out.println(siguiente.getVertice().getElem());
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
                     if (listaVisitados.localizar(siguiente.getVertice().getElem()) < 0) {
                         posDestino = listaVisitados.localizar(nodoDestino.getElem());
                         if (posDestino > 0) {
@@ -511,12 +518,11 @@ public class GrafoEtiquetado {
                         }
                         listadoCaminos = todosCaminos(siguiente.getVertice(), nodoDestino, listaVisitados, camino,
                                 listadoCaminos);
-                        Object elemNodo = camino.recuperar(camino.longitud());
-                        while (!elemNodo.equals(nodoOrigen.getElem())) {
-                            posElemento = listaVisitados.localizar(elemNodo);
-                            listaVisitados.eliminar(posElemento);
+                        posicion = camino.longitud();
+                        while (posicion != camino.localizar(nodoDestino.getElem())) {
+                            listaVisitados.eliminar(camino.longitud());
                             camino.eliminar(camino.longitud());
-                            elemNodo = camino.recuperar(camino.longitud());
+                            posicion--;
                         }
                     }
                     siguiente = siguiente.getSigAdyacente();
@@ -608,6 +614,6 @@ public class GrafoEtiquetado {
     }
 
     public Object obtenerVertice(Object nombrePais) {
-        return buscarVertice(inicio, nombrePais);
+        return buscarVertice(inicio, nombrePais).getElem();
     }
 }
