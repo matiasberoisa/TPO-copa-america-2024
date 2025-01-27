@@ -23,7 +23,6 @@ public class ArbolAVL {
             exito = insertarAux(this.raiz, elem);
             if (exito) {
                 this.raiz = analizarBalance(this.raiz);
-                // this.raiz.recalcularAltura();
             }
         }
         return exito;
@@ -114,7 +113,6 @@ public class ArbolAVL {
             } else {
                 exito = eliminarAux(this.raiz, elemento);
                 this.raiz = analizarBalance(this.raiz);
-                // this.raiz.recalcularAltura();
             }
         }
         return exito;
@@ -135,12 +133,12 @@ public class ArbolAVL {
                         } else {
                             borrarNodo(hijo);
                             n.setIzquierdo(analizarBalance(hijo));
-                            // n.recalcularAltura();
+
                         }
                     } else {
                         exito = eliminarAux(n.getIzquierdo(), elemento);
                         n.setIzquierdo(analizarBalance(n.getIzquierdo()));
-                        // n.recalcularAltura();
+
                     }
                 }
             } else {
@@ -154,12 +152,12 @@ public class ArbolAVL {
                         } else {
                             borrarNodo(hijo);
                             n.setDerecho(analizarBalance(hijo));
-                            // n.recalcularAltura();
+
                         }
                     } else {
                         exito = eliminarAux(n.getDerecho(), elemento);
                         n.setDerecho(analizarBalance(n.getDerecho()));
-                        // n.recalcularAltura();
+
                     }
                 }
             }
@@ -428,15 +426,15 @@ public class ArbolAVL {
     private Comparable privateRecuperar(NodoAVL n, Comparable buscado) {
         Comparable elem = null;
         Comparable aux = n.getElem();
-        if (aux.compareTo(buscado) == 0) { // cast y .toString()
+        if (aux.compareTo(buscado) == 0) {
             elem = aux;
         } else {
-            if (buscado.compareTo(aux) < 0) { // toString
+            if (buscado.compareTo(aux) < 0) {
                 if (n.getIzquierdo() != null) {
                     elem = privateRecuperar(n.getIzquierdo(), buscado);
                 }
             } else {
-                if (buscado.compareTo(aux) > 0) { // toString
+                if (buscado.compareTo(aux) > 0) {
                     if (n.getDerecho() != null) {
                         elem = privateRecuperar(n.getDerecho(), buscado);
                     }

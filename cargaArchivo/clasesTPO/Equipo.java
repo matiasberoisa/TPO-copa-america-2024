@@ -18,6 +18,15 @@ public class Equipo implements Comparable {
         golesContra = 0;
     }
 
+    public Equipo(String unPais) {
+        nombrePais = unPais;
+        tecnico = "";
+        grupoInicial = "";
+        puntosTotales = 0;
+        golesFavor = 0;
+        golesContra = 0;
+    }
+
     public String getPais() {
         return this.nombrePais;
     }
@@ -58,6 +67,14 @@ public class Equipo implements Comparable {
         puntosTotales = p;
     }
 
+    public int getGolesAFavor() {
+        return golesFavor;
+    }
+
+    public int getGolesEnContra() {
+        return golesContra;
+    }
+
     public void setGolesAFavor(int F) {
         golesFavor = F;
     }
@@ -85,13 +102,17 @@ public class Equipo implements Comparable {
 
     public int compareTo(Object otroEquipo) {
         int res;
-        String cad = otroEquipo.toString();
-        res = this.toString().compareTo(cad);
+        Equipo unEquipo = (Equipo) otroEquipo;
+        res = this.nombrePais.compareTo(unEquipo.getPais());
         return res;
     }
 
     public String datosEquipo() {
         return "equipo: " + nombrePais + "\npuntos totales: " + puntosTotales + "\n goles a favor: " + golesFavor
                 + "\n goles en contra: " + golesContra + "\n diferencia de goles: " + diferenciaDeGoles();
+    }
+
+    public String puntuacion() {
+        return "equipo: " + nombrePais + ", goles a favor: " + golesFavor;
     }
 }

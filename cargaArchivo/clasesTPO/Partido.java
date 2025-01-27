@@ -93,7 +93,7 @@ public class Partido {
     public String resultado() {
         String cad;
 
-        cad = clave.getEquipoUno() + " [" + golesE1 + " - " + golesE2 + "] " + clave.getEquipoDos()
+        cad = eq1 + " [" + golesE1 + " - " + golesE2 + "] " + eq2
                 + " INSTANCIA: " + instancia;
 
         return cad;
@@ -103,4 +103,9 @@ public class Partido {
         int hash = clave.hashCode();
         return hash;
     }
+
+    public boolean compararEquipos(String e1, String e2) {
+        return ((eq1.equals(e1)) && (eq2.equals(e2)));
+    }
+
 }

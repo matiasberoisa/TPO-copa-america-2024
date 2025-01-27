@@ -9,6 +9,9 @@ import conjuntistas.ArbolAVL;
 import grafos.GrafoEtiquetado;
 
 public class Carga {
+    private GrafoEtiquetado ciudades = new GrafoEtiquetado();
+    private ArbolAVL equipos = new ArbolAVL();
+    private HashMap<Integer, Partido> mapa = new HashMap<Integer, Partido>();
     private FileReader archivoLectura;
     private BufferedReader lector;
     private StringTokenizer split;
@@ -17,7 +20,6 @@ public class Carga {
         archivoLectura = new FileReader(
                 "C:\\Users\\mbero\\Downloads\\TPs\\EstructuraDeDatos\\estructuras\\estructuras\\listas\\ListaCiudades.txt");
         lector = new BufferedReader(archivoLectura);
-        GrafoEtiquetado ciudades = new GrafoEtiquetado();
         String linea, valor, nombreCiudad = "";
         boolean alojamiento = false, sedeCopa = false;
         while ((linea = lector.readLine()) != null) {
@@ -53,7 +55,6 @@ public class Carga {
         archivoLectura = new FileReader(
                 "C:\\Users\\mbero\\Downloads\\TPs\\EstructuraDeDatos\\estructuras\\estructuras\\listas\\ListaEquipos.txt");
         lector = new BufferedReader(archivoLectura);
-        ArbolAVL equipos = new ArbolAVL();
         String linea, valor, nombrePais = "", director = "", grupo = "";
         while ((linea = lector.readLine()) != null) {
             split = new StringTokenizer(linea, ";");
@@ -84,7 +85,6 @@ public class Carga {
         archivoLectura = new FileReader(
                 "C:\\Users\\mbero\\Downloads\\TPs\\TPO-copa-america-2024\\cargaArchivo\\clasesTPO\\archivos\\listaPartidos.txt");
         lector = new BufferedReader(archivoLectura);
-        HashMap<Integer, Partido> mapa = new HashMap<Integer, Partido>();
         String linea, eq1 = "", eq2 = "", instancia = "", ciudad = "", estadio = "", valor = "";
         int golE1 = 0, golE2 = 0;
         while ((linea = lector.readLine()) != null) {
@@ -119,6 +119,11 @@ public class Carga {
             Partido partido = new Partido(eq1.toUpperCase(), eq2.toUpperCase(), instancia, ciudad, estadio, golE1,
                     golE2);
             mapa.put(partido.getClavePartido(), partido);
+            Equipo equipo1 = (Equipo) equipos.recuperar(new Equipo(eq1.toUpperCase()));
+            Equipo equipo2 = (Equipo) equipos.recuperar(new Equipo(eq2.toUpperCase()));
+            equipo1.actualizarEquipo(golE1, golE2);
+            equipo2.actualizarEquipo(golE2, golE1);
+
         }
         return mapa;
 

@@ -1,16 +1,12 @@
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.io.*;
+import java.util.*;
 
-import clasesTPO.Ciudad;
-import clasesTPO.Equipo;
-import clasesTPO.Partido;
-import conjuntistas.ArbolAVL;
+import clasesTPO.*;
+import conjuntistas.*;
 import grafos.GrafoEtiquetado;
+import lineales.Lista;
 
-public class menu {
+public class menuCopaAmerica {
     private static GrafoEtiquetado ciudades;
     private static ArbolAVL equipos;
     private static HashMap<Integer, Partido> partidos;
@@ -81,7 +77,7 @@ public class menu {
     }
 
     public static void verCiudades() {
-        String opcion = "", nombreCiudad = "", valorSede = "", valorAlojamiento = "", letra = "";
+        String opcion = "", nombreCiudad = "", valorSede = "", valorAlojamiento = "", letra = "", textoLog = "";
         boolean sede = false, alojamiento = false, stop = false;
         do {
             System.out.println("1. si desea agregar una ciudad");
@@ -110,6 +106,8 @@ public class menu {
                         Ciudad nuCiudad = new Ciudad(nombreCiudad, alojamiento, sede);
                         ciudades.insertarVertice(nuCiudad);
                         System.out.println("la ciudad " + nombreCiudad + " se ha agregado con exito.");
+                        textoLog = "se inserto la ciudad " + nombreCiudad;
+                        actualizarLog(textoLog);
                     }
                     break;
                 case "2": // eliminar una ciudad
@@ -119,6 +117,8 @@ public class menu {
                     if (ciudades.existeVertice(nombreCiudad)) {
                         ciudades.eliminarVertice(nombreCiudad);
                         System.out.println("la ciudad " + nombreCiudad + " se ha eliminado con exito.");
+                        textoLog = "se elimino la ciudad " + nombreCiudad;
+                        actualizarLog(textoLog);
                     } else {
                         System.out.println("la ciudad " + nombreCiudad + " NO se encuentra cargada");
                     }
@@ -148,6 +148,8 @@ public class menu {
                                 System.out.println("opcion invalida");
                                 break;
                         }
+                        textoLog = "se modifico de la ciudad " + nombreCiudad + "la opcion " + letra;
+                        actualizarLog(textoLog);
                     } else {
                         System.out.println("la ciudad " + nombreCiudad + " NO se encuentra cargada");
                     }
@@ -164,7 +166,7 @@ public class menu {
 
     public static void verEquipos() {
 
-        String opcion = "", nombrePais = "", apellido = "", grupo = "", letra = "";
+        String opcion = "", nombrePais = "", apellido = "", grupo = "", letra = "", textoLog = "";
         boolean stop = false;
         do {
             System.out.println("1. si desea agregar un equipo");
@@ -175,26 +177,28 @@ public class menu {
             switch (opcion) {
                 case "1": // agregar un equipo
                     System.out.println("ingrese el nombre del pais:");
-                    nombrePais = dato.nextLine();
                     nombrePais = dato.nextLine().toUpperCase();
-                    if (equipos.pertenece(nombrePais)) {
+                    if (equipos.pertenece(new Equipo(nombrePais))) {
                         System.out.println("el pais " + nombrePais + " ya se encuentra cargada");
                     } else {
                         System.out.println("ingrese el apellido del tecnico del pais " + nombrePais);
                         apellido = dato.next().toLowerCase();
                         System.out.println("ingrese el grupo A/B/C/D del pais " + nombrePais);
                         grupo = dato.next().toUpperCase();
-                        Equipo nuEquipo = new Equipo(nombrePais.toUpperCase(), apellido, grupo);
+                        Equipo nuEquipo = new Equipo(nombrePais, apellido, grupo);
                         equipos.insertar(nuEquipo);
+                        textoLog = "se inserto el equipo " + nombrePais;
+                        actualizarLog(textoLog);
                     }
                     break;
                 case "2": // eliminar un equipo
                     System.out.println("ingrese el nombre del pais:");
-                    nombrePais = dato.nextLine();
                     nombrePais = dato.nextLine().toUpperCase();
-                    if (equipos.pertenece(nombrePais)) {
-                        equipos.eliminar(nombrePais);
+                    if (equipos.pertenece(new Equipo(nombrePais))) {
+                        equipos.eliminar(new Equipo(nombrePais));
                         System.out.println("el pais " + nombrePais + " ha sido eliminado con exito");
+                        textoLog = "se elimino el equipo " + nombrePais;
+                        actualizarLog(textoLog);
                     } else {
                         System.out.println("el pais " + nombrePais + " NO se encuentra cargado");
                     }
@@ -203,7 +207,7 @@ public class menu {
                     System.out.println("ingrese el nombre del pais:");
                     nombrePais = dato.nextLine();
                     nombrePais = dato.nextLine().toUpperCase();
-                    Equipo elEquipo = (Equipo) equipos.recuperar(nombrePais);
+                    Equipo elEquipo = (Equipo) equipos.recuperar(new Equipo(nombrePais));
                     if (elEquipo != null) {
                         System.out.println("que desea modificar del pais " + nombrePais + "?");
                         System.out.println(
@@ -224,6 +228,8 @@ public class menu {
                                 System.out.println("opcion invalida");
                                 break;
                         }
+                        textoLog = "se modifico del equipo " + nombrePais + " la opcion " + opcion;
+                        actualizarLog(textoLog);
                     } else {
                         System.out.println("el pais " + nombrePais + " NO se encuentra cargado");
                     }
@@ -239,17 +245,17 @@ public class menu {
     }
 
     public static void verPartidos() {
-        String eq1 = "", eq2 = "", instancia = "", ciudad = "", estadio = "";
+        String eq1 = "", eq2 = "", instancia = "", ciudad = "", estadio = "", textoLog = "";
         int golesE1 = 0, golesE2 = 0;
         Equipo equipo1 = null, equipo2 = null;
         System.out.println("ingrese el nombre del equipo 1:");
         eq1 = dato.nextLine();
         eq1 = dato.nextLine().toUpperCase();
-        if (equipos.pertenece(eq1)) {
+        if (equipos.pertenece(new Equipo(eq1))) {
             System.out.println("ingrese el nombre del equipo 2:");
             eq2 = dato.nextLine();
             eq2 = dato.nextLine().toUpperCase();
-            if (equipos.pertenece(eq2)) {
+            if (equipos.pertenece(new Equipo(eq2))) {
                 System.out.println("partido entre " + eq1 + " y " + eq2);
                 System.out.println("ingrese la instancia del partido");
                 instancia = dato.nextLine();
@@ -264,13 +270,15 @@ public class menu {
                 golesE1 = dato.nextInt();
                 System.out.println("Ingrese la cantidad de goles del equipo 2: " + eq2);
                 golesE2 = dato.nextInt();
-                equipo1 = (Equipo) equipos.recuperar(eq1);
-                equipo2 = (Equipo) equipos.recuperar(eq2);
+                equipo1 = (Equipo) equipos.recuperar(new Equipo(eq1));
+                equipo2 = (Equipo) equipos.recuperar(new Equipo(eq2));
                 equipo1.actualizarEquipo(golesE1, golesE2);
                 equipo2.actualizarEquipo(golesE2, golesE1);
                 Partido nuPartido = new Partido(eq1, eq2, instancia, ciudad, estadio, golesE1, golesE2);
                 partidos.put(nuPartido.getClavePartido(), nuPartido);
                 System.out.println("El partido fue cargado correctamente");
+                textoLog = "se cargaron los datos del partido " + eq1 + "-" + eq2;
+                actualizarLog(textoLog);
             } else {
                 System.out.println(" el equipo 2 NO se encuentra cargado");
             }
@@ -292,8 +300,8 @@ public class menu {
                     System.out.println("ingrese el nombre de un pais:");
                     pais = dato.nextLine();
                     pais = dato.nextLine().toUpperCase();
-                    if (equipos.pertenece(pais)) {
-                        Equipo elEquipo = (Equipo) equipos.recuperar(pais);
+                    if (equipos.pertenece(new Equipo(pais))) {
+                        Equipo elEquipo = (Equipo) equipos.recuperar(new Equipo(pais));
                         System.out.println(elEquipo.datosEquipo());
                     } else {
                         System.out.println("el pais " + pais + " NO se encuentra cargado");
@@ -316,18 +324,44 @@ public class menu {
         } while (!stop);
     }
 
+    @SuppressWarnings("unlikely-arg-type")
     public static void consultaPartidos() {
-
+        String eq1 = "", eq2 = "";
+        Iterator<Integer> indice = partidos.keySet().iterator();
+        boolean encontrado = false;
+        System.out.println("ingrese el nombre del equipo 1:");
+        eq1 = dato.nextLine();
+        eq1 = dato.nextLine().toUpperCase();
+        if (equipos.pertenece(new Equipo(eq1))) {
+            System.out.println("ingrese el nombre del equipo 2:");
+            eq2 = dato.nextLine();
+            eq2 = dato.nextLine().toUpperCase();
+            if (equipos.pertenece(new Equipo(eq2))) {
+                while (indice.hasNext() && !encontrado) {
+                    Partido elPartido = partidos.get(indice);
+                    if (elPartido.compararEquipos(eq1, eq2)) {
+                        encontrado = true;
+                        elPartido.resultado();
+                    }
+                }
+                if (encontrado) {
+                    System.out.println("no se ha jugado ningun partido entre " + eq1 + " y " + eq2);
+                }
+            } else {
+                System.out.println(" el equipo 2 NO se encuentra cargado");
+            }
+        } else {
+            System.out.println(" el equipo 1 NO se encuentra cargado");
+        }
     }
 
     public static void consultaViajes() {
-        String origen = "", destino = "", opcion = "", ciudadEvitada = "";
+        String origen = "", destino = "", opcion = "", ciudadEvitada = "", ciudad = "", filtro = "";
         boolean stop = false;
         System.out.println("ingrese la ciudad de origen");
         origen = dato.nextLine();
         origen = dato.nextLine().toLowerCase();
         System.out.println("ingrese la ciudad de destino");
-        destino = dato.nextLine();
         destino = dato.nextLine().toLowerCase();
         if (ciudades.existeVertice(origen) && ciudades.existeVertice(destino)) {
             do {
@@ -357,7 +391,27 @@ public class menu {
                     case "4":
                         System.out.println("todos los posibles caminos desde " + origen + " hasta " + destino + ":");
                         System.out.println(ciudades.todosLosCaminos(origen, destino, null));
-                        // filtrar por alojamiento y pasar por ciudad
+                        System.out.println("desea filtrar los caminos? S/N");
+                        filtro = dato.next();
+                        if (filtro.equals("S")) {
+                            System.out.println("desea filtrar por alojamiento(A) o ciudad donde quiera pasar(C)?");
+                            filtro = dato.next().toUpperCase();
+                            switch (filtro) {
+                                case "A":
+                                    System.out.println(ciudades.todosLosCaminos(origen, destino, "A"));
+                                    break;
+                                case "C":
+                                    System.out.println("ingrese ciudad por donde desea pasar?");
+                                    ciudad = dato.nextLine();
+                                    ciudad = dato.nextLine().toLowerCase();
+                                    System.out.println(ciudades.todosLosCaminos(origen, destino, ciudad));
+                                    break;
+
+                                default:
+                                    System.out.println("opcion invalida");
+                                    break;
+                            }
+                        }
                         break;
                     case "5":
                         stop = true;
@@ -374,7 +428,20 @@ public class menu {
     }
 
     public static void listadoEquipos() {
-
+        HeapMax arbolGoles = new HeapMax();
+        Lista listadoEquipos = equipos.listar();
+        int indice = 1;
+        while (!listadoEquipos.esVacia()) {
+            EquipoGoles elEquipo = new EquipoGoles((Equipo) listadoEquipos.recuperar(1));
+            arbolGoles.insertar(elEquipo);
+            listadoEquipos.eliminar(1);
+        }
+        System.out.println("lista de equipos ordenados de mayor a menor segun goles a favor:");
+        while (!arbolGoles.esVacio()) {
+            System.out.println(indice + ") " + arbolGoles.recuperarCima().toString());
+            arbolGoles.eliminarCima();
+            indice++;
+        }
     }
 
     public static void mostrarSistema() {
@@ -387,6 +454,16 @@ public class menu {
         System.out.println(
                 "//////////////////////////////////////////////////////////estructura de partidos//////////////////////////////////////////////////////////");
         System.out.println(partidos.toString());
+    }
+
+    public static void actualizarLog(String cad) {
+        try (Writer w = new FileWriter("log.txt", true)) {
+            w.write(cad + "\r\n");
+            w.close();
+
+        } catch (IOException ex) {
+            System.err.println("Error leyendo o escribiendo en algun archivo.");
+        }
     }
 
     public static void limpiarLog() {
