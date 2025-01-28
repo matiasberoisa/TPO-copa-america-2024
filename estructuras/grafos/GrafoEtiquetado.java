@@ -473,19 +473,24 @@ public class GrafoEtiquetado {
         return caminoCorto;
     }
 
-    public Lista todosLosCaminos(Object origen, Object destino, Object opcion) {
+    public Lista todosLosCaminos(Object origen, Object destino, Object ciudad, String opcion) {
         Lista listaVisitados = new Lista(), caminos = new Lista(), listadoCaminos = new Lista();
-        NodoVert nodoOrigen = buscarVertice(this.inicio, origen), nodoDestino = buscarVertice(this.inicio, destino);
+        NodoVert nodoOrigen = buscarVertice(this.inicio, origen), nodoDestino = buscarVertice(this.inicio, destino),
+                nodoCiudad;
         if (!esVacio() && nodoOrigen != null && nodoDestino != null) {
-            if (opcion == null) {
+            if (opcion.equals("")) {
                 listadoCaminos = todosCaminos(nodoOrigen, nodoDestino, listaVisitados, caminos, listadoCaminos);
             } else {
-                if (((String) opcion).equals("A")) {
-                    listadoCaminos = todosCaminosConAlojamiento(nodoOrigen, nodoDestino, true,
-                            listaVisitados, caminos, listadoCaminos);
-                } else {
-                    listadoCaminos = todosCaminosPorCiudad(nodoOrigen, nodoDestino, opcion, listaVisitados, caminos,
+                if (opcion.equals("A")) {
+                    listadoCaminos = todosCaminosConAlojamiento(nodoOrigen, nodoDestino, listaVisitados, caminos,
                             listadoCaminos);
+                } else {
+                    nodoCiudad = buscarVertice(this.inicio, ciudad);
+                    if (nodoCiudad != null) {
+                        listadoCaminos = todosCaminosPorCiudad(nodoOrigen, nodoDestino, nodoCiudad, listaVisitados,
+                                caminos,
+                                listadoCaminos);
+                    }
                 }
             }
 
@@ -505,12 +510,6 @@ public class GrafoEtiquetado {
             } else {
                 NodoAdy siguiente = nodoOrigen.getPrimerAdy();
                 while (siguiente != null) {
-                    System.out.println(siguiente.getVertice().getElem());
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
                     if (listaVisitados.localizar(siguiente.getVertice().getElem()) < 0) {
                         posDestino = listaVisitados.localizar(nodoDestino.getElem());
                         if (posDestino > 0) {
@@ -518,11 +517,10 @@ public class GrafoEtiquetado {
                         }
                         listadoCaminos = todosCaminos(siguiente.getVertice(), nodoDestino, listaVisitados, camino,
                                 listadoCaminos);
-                        posicion = camino.longitud();
-                        while (posicion != camino.localizar(nodoDestino.getElem())) {
+                        posicion = camino.localizar(nodoOrigen.getElem());
+                        for (int i = camino.longitud(); i > posicion; i--) {
                             listaVisitados.eliminar(camino.longitud());
                             camino.eliminar(camino.longitud());
-                            posicion--;
                         }
                     }
                     siguiente = siguiente.getSigAdyacente();
@@ -530,17 +528,19 @@ public class GrafoEtiquetado {
             }
         }
         return listadoCaminos;
+
     }
 
-    private Lista todosCaminosPorCiudad(NodoVert nodoOrigen, NodoVert nodoDestino, Object ciudad, Lista listaVisitados,
+    private Lista todosCaminosPorCiudad(NodoVert nodoOrigen, NodoVert nodoDestino, NodoVert ciudad,
+            Lista listaVisitados,
             Lista camino,
             Lista listadoCaminos) {
         if (nodoOrigen != null) {
-            int posDestino = 0, posElemento = 0;
+            int posDestino = 0, posicion = 0;
             camino.insertar(nodoOrigen.getElem(), camino.longitud() + 1);
             listaVisitados.insertar(nodoOrigen.getElem(), listaVisitados.longitud() + 1);
             if (nodoOrigen.getElem().equals(nodoDestino.getElem())) {
-                if (camino.localizar(ciudad) > 0) {
+                if (camino.localizar(ciudad.getElem()) > 0) {
                     listadoCaminos.insertar(camino.toString(), listadoCaminos.longitud() + 1);
                 }
             } else {
@@ -555,12 +555,10 @@ public class GrafoEtiquetado {
                                 listaVisitados,
                                 camino,
                                 listadoCaminos);
-                        Object elemNodo = camino.recuperar(camino.longitud());
-                        while (!elemNodo.equals(nodoOrigen.getElem())) {
-                            posElemento = listaVisitados.localizar(elemNodo);
-                            listaVisitados.eliminar(posElemento);
+                        posicion = camino.localizar(nodoOrigen.getElem());
+                        for (int i = camino.longitud(); i > posicion; i--) {
+                            listaVisitados.eliminar(camino.longitud());
                             camino.eliminar(camino.longitud());
-                            elemNodo = camino.recuperar(camino.longitud());
                         }
                     }
                     siguiente = siguiente.getSigAdyacente();
@@ -570,47 +568,43 @@ public class GrafoEtiquetado {
         return listadoCaminos;
     }
 
-    private Lista todosCaminosConAlojamiento(NodoVert nodoOrigen, NodoVert nodoDestino, Object ciudad,
+    private Lista todosCaminosConAlojamiento(NodoVert nodoOrigen, NodoVert nodoDestino,
             Lista listaVisitados,
             Lista camino,
             Lista listadoCaminos) {
         if (nodoOrigen != null) {
-            int posDestino = 0, posElemento = 0;
-            Ciudad unaCiudad = (Ciudad) nodoOrigen.getElem();
-            if (unaCiudad.tieneAlojamiento()) {
-                camino.insertar(nodoOrigen.getElem(), camino.longitud() + 1);
-                listaVisitados.insertar(nodoOrigen.getElem(), listaVisitados.longitud() + 1);
-                if (nodoOrigen.getElem().equals(nodoDestino.getElem())) {
-                    if (camino.localizar(ciudad) > 0) {
-                        listadoCaminos.insertar(camino.toString(), listadoCaminos.longitud() + 1);
-                    }
-                } else {
-                    NodoAdy siguiente = nodoOrigen.getPrimerAdy();
-                    while (siguiente != null) {
-                        if (listaVisitados.localizar(siguiente.getVertice().getElem()) < 0) {
-                            posDestino = listaVisitados.localizar(nodoDestino.getElem());
-                            if (posDestino > 0) {
-                                listaVisitados.eliminar(posDestino);
-                            }
-                            listadoCaminos = todosCaminosPorCiudad(siguiente.getVertice(), nodoDestino, ciudad,
-                                    listaVisitados,
-                                    camino,
-                                    listadoCaminos);
-                            Object elemNodo = camino.recuperar(camino.longitud());
-                            while (!elemNodo.equals(nodoOrigen.getElem())) {
-                                posElemento = listaVisitados.localizar(elemNodo);
-                                listaVisitados.eliminar(posElemento);
-                                camino.eliminar(camino.longitud());
-                                elemNodo = camino.recuperar(camino.longitud());
-                            }
+            int posDestino = 0, posicion = 0;
+            camino.insertar(nodoOrigen.getElem(), camino.longitud() + 1);
+            listaVisitados.insertar(nodoOrigen.getElem(), listaVisitados.longitud() + 1);
+            if (nodoOrigen.getElem().equals(nodoDestino.getElem())) {
+                listadoCaminos.insertar(camino.toString(), listadoCaminos.longitud() + 1);
+            } else {
+                NodoAdy siguiente = nodoOrigen.getPrimerAdy();
+                while (siguiente != null) {
+                    Ciudad unaCiudad = (Ciudad) siguiente.getVertice().getElem();
+                    if (listaVisitados.localizar(siguiente.getVertice().getElem()) < 0
+                            && unaCiudad.tieneAlojamiento()) {
+                        posDestino = listaVisitados.localizar(nodoDestino.getElem());
+                        if (posDestino > 0) {
+                            listaVisitados.eliminar(posDestino);
                         }
-                        siguiente = siguiente.getSigAdyacente();
+                        listadoCaminos = todosCaminosConAlojamiento(siguiente.getVertice(), nodoDestino,
+                                listaVisitados,
+                                camino,
+                                listadoCaminos);
+                        posicion = camino.localizar(nodoOrigen.getElem());
+                        for (int i = camino.longitud(); i > posicion; i--) {
+                            listaVisitados.eliminar(camino.longitud());
+                            camino.eliminar(camino.longitud());
+                        }
                     }
+                    siguiente = siguiente.getSigAdyacente();
                 }
             }
 
         }
         return listadoCaminos;
+
     }
 
     public Object obtenerVertice(Object nombrePais) {

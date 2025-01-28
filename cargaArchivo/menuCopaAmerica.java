@@ -326,7 +326,6 @@ public class menuCopaAmerica {
         } while (!stop);
     }
 
-    @SuppressWarnings("unlikely-arg-type")
     public static void consultaPartidos() {
         String eq1 = "", eq2 = "";
         Iterator<Integer> indice = partidos.keySet().iterator();
@@ -336,17 +335,17 @@ public class menuCopaAmerica {
         eq1 = dato.nextLine().toUpperCase();
         if (equipos.pertenece(new Equipo(eq1))) {
             System.out.println("ingrese el nombre del equipo 2:");
-            eq2 = dato.nextLine();
             eq2 = dato.nextLine().toUpperCase();
             if (equipos.pertenece(new Equipo(eq2))) {
                 while (indice.hasNext() && !encontrado) {
-                    Partido elPartido = partidos.get(indice);
+                    Integer clave = indice.next();
+                    Partido elPartido = partidos.get(clave);
                     if (elPartido.compararEquipos(eq1, eq2)) {
                         encontrado = true;
-                        elPartido.resultado();
+                        System.out.println(elPartido.resultado());
                     }
                 }
-                if (encontrado) {
+                if (!encontrado) {
                     System.out.println("no se ha jugado ningun partido entre " + eq1 + " y " + eq2);
                 }
             } else {
@@ -360,6 +359,7 @@ public class menuCopaAmerica {
     public static void consultaViajes() {
         String origen = "", destino = "", opcion = "", evitada = "", ciudad = "", filtro = "";
         boolean stop = false;
+        Lista caminos;
         Ciudad ciudadOrigen, ciudadDestino, ciudadEvitada, ciudadIncluida;
         System.out.println("ingrese la ciudad de origen");
         origen = dato.nextLine();
@@ -397,23 +397,40 @@ public class menuCopaAmerica {
                         break;
                     case "4":
                         System.out.println("todos los posibles caminos desde " + origen + " hasta " + destino + ":");
-                        System.out.println(ciudades.todosLosCaminos(ciudadOrigen, ciudadDestino, null));
+                        caminos = ciudades.todosLosCaminos(ciudadOrigen, ciudadDestino, null, "");
+                        for (int i = 1; i <= caminos.longitud(); i++) {
+                            System.out.println("camino " + i + ") " + caminos.recuperar(i).toString());
+                        }
                         System.out.println("desea filtrar los caminos? S/N");
                         filtro = dato.next();
-                        if (filtro.equals("S")) {
+                        if (filtro.equalsIgnoreCase("S")) {
                             System.out.println("desea filtrar por alojamiento(A) o ciudad donde quiera pasar(C)?");
                             filtro = dato.next().toUpperCase();
                             switch (filtro) {
                                 case "A":
-                                    System.out.println(ciudades.todosLosCaminos(ciudadOrigen, ciudadDestino, "A"));
+                                    System.out.println("caminos filtrados segun alojamiento:");
+                                    caminos = ciudades.todosLosCaminos(ciudadOrigen, ciudadDestino, null,
+                                            filtro);
+                                    for (int i = 1; i <= caminos.longitud(); i++) {
+                                        System.out.println("camino " + i + ") " + caminos.recuperar(i).toString());
+                                    }
                                     break;
                                 case "C":
                                     System.out.println("ingrese ciudad por donde desea pasar?");
                                     ciudad = dato.nextLine();
                                     ciudad = dato.nextLine().toLowerCase();
                                     ciudadIncluida = new Ciudad(ciudad);
-                                    System.out.println(
-                                            ciudades.todosLosCaminos(ciudadOrigen, ciudadDestino, ciudadIncluida));
+                                    if (ciudades.existeVertice(ciudadIncluida)) {
+                                        System.out.println("caminos filtrados que pasen por " + ciudad + ":");
+                                        caminos = ciudades.todosLosCaminos(ciudadOrigen, ciudadDestino, ciudadIncluida,
+                                                filtro);
+                                        for (int i = 1; i <= caminos.longitud(); i++) {
+                                            System.out.println("camino " + i + ") " + caminos.recuperar(i).toString());
+                                        }
+                                    } else {
+                                        System.out.println("la ciudad " + ciudad + " NO se encuentra cargada");
+                                    }
+
                                     break;
 
                                 default:

@@ -105,7 +105,14 @@ public class Partido {
     }
 
     public boolean compararEquipos(String e1, String e2) {
-        return ((eq1.equals(e1)) && (eq2.equals(e2)));
+        ClavePartido nuClave;
+        if (e1.compareTo(e2) < 0) {
+            nuClave = new ClavePartido(e1, e2);
+        } else {
+            nuClave = new ClavePartido(e2, e1);
+        }
+        return ((clave.getEquipoUno().equals(nuClave.getEquipoUno()))
+                && (clave.getEquipoDos().equals(nuClave.getEquipoDos())));
     }
 
 }
