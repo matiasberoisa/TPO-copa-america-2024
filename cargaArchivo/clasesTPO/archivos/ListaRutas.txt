@@ -1,40 +1,40 @@
-Nueva York;Los Angeles;450
-Nueva York;Filadelfia;25
-Nueva York;Dallas;150
-Washington;Nueva York;600
-San Antonio;Fort Worth;120
-San Antonio;San Francisco;136
-Austin;Fort Worth;165
-Austin;Phoenix;212
-Austin;Indianapolis;299
-Columbus;Los Angeles;240
-Phoenix;Columbus;300
-Washington;Los Angeles;305
-Washington;Houston;302
-Washington;San Francisco;250
-Filadelfia;Washington;277
-Phoenix;LAS VEGAS;80
-San Francisco;Indianapolis;100
-Los Angeles;Indianapolis;121
-LAS VEGAS;Los Angeles;135
-LAS VEGAS;Houston;159
-LAS VEGAS;Filadelfia;406
-Houston;Phoenix;500
-San Antonio;San Diego;482
-San Diego;Dallas;111
-San Jose;San Diego;222
-Dallas;San Jose;333
-Fort Worth;LAS VEGAS;444
-Columbus;Seattle;387
-Indianapolis;Columbus;420
-Charlotte;San Francisco;69
-Charlotte;Seattle;99
-San Francisco;Denver;109
-Seattle;Denver;440
-Seattle;Washington;428
-Denver;Washington;285
-Nueva York;LAS VEGAS;271
-Nueva York;Denver;292
-Washington;LAS VEGAS;104
-Washington;DALLAS;101
-San Francisco;LAS VEGAS;217
+Atlanta;Houston;428
+Miami;Austin;675
+Orlando;Santa clara;512
+Charlotte;Glendale;399
+Houston;East Rutherford;287
+Austin;Las Vegas;734
+Santa clara;Indianapolis;629
+Glendale;Denver;481
+Dallas;Miami;378
+San Francisco;Washington;642
+Indianapolis;Portland;518
+Seattle;Arlington;209
+Orlando;Columbus;846
+Houston;Fort Worth;391
+Charlotte;Atlanta;573
+East Rutherford;Seattle;739
+Portland;San Francisco;654
+Fort Worth;Glendale;436
+Las Vegas;Dallas;822
+Denver;Miami;294
+Washington;Charlotte;481
+Santa clara;Austin;759
+Houston;Seattle;358
+Atlanta;San Francisco;605
+Orlando;Indianapolis;752
+Portland;Miami;464
+Charlotte;East Rutherford;511
+Dallas;Denver;704
+Las Vegas;Orlando;521
+Fort Worth;Washington;612
+Seattle;Columbus;398
+San Francisco;Atlanta;457
+Arlington;Santa clara;725
+Austin;Dallas;329
+Glendale;Portland;418
+East Rutherford;Houston;289
+Miami;Charlotte;539
+Orlando;Fort Worth;834
+Indianapolis;Denver;672
+Portland;Las Vegas;713
