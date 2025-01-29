@@ -253,6 +253,7 @@ public class menuCopaAmerica {
     public static void verPartidos() {
         String eq1 = "", eq2 = "", instancia = "", ciudad = "", estadio = "", textoLog = "";
         int golesE1 = 0, golesE2 = 0;
+        Ciudad sede;
         Equipo equipo1 = null, equipo2 = null;
         System.out.println("ingrese el nombre del equipo 1:");
         eq1 = dato.nextLine();
@@ -266,21 +267,31 @@ public class menuCopaAmerica {
                 instancia = dato.nextLine().toUpperCase();
                 System.out.println("ingrese la ciudad donde se jugo el partido");
                 ciudad = dato.nextLine().toLowerCase();
-                System.out.println("ingrese el estadio donde se jugo el partido");
-                estadio = dato.nextLine().toLowerCase();
-                System.out.println("Ingrese la cantidad de goles del equipo 1: " + eq1);
-                golesE1 = dato.nextInt();
-                System.out.println("Ingrese la cantidad de goles del equipo 2: " + eq2);
-                golesE2 = dato.nextInt();
-                equipo1 = (Equipo) equipos.recuperar(new Equipo(eq1));
-                equipo2 = (Equipo) equipos.recuperar(new Equipo(eq2));
-                equipo1.actualizarEquipo(golesE1, golesE2);
-                equipo2.actualizarEquipo(golesE2, golesE1);
-                Partido nuPartido = new Partido(eq1, eq2, instancia, ciudad, estadio, golesE1, golesE2);
-                partidos.put(nuPartido.getClavePartido(), nuPartido);
-                System.out.println("El partido fue cargado correctamente");
-                textoLog = "se cargaron los datos del partido " + eq1 + "-" + eq2;
-                actualizarLog(textoLog);
+                if (ciudades.existeVertice(new Ciudad(ciudad))) {
+                    sede = (Ciudad) ciudades.obtenerVertice(new Ciudad(ciudad));
+                    if (sede.sedeCopa()) {
+                        System.out.println("ingrese el estadio donde se jugo el partido");
+                        estadio = dato.nextLine().toLowerCase();
+                        System.out.println("Ingrese la cantidad de goles del equipo 1: " + eq1);
+                        golesE1 = dato.nextInt();
+                        System.out.println("Ingrese la cantidad de goles del equipo 2: " + eq2);
+                        golesE2 = dato.nextInt();
+                        equipo1 = (Equipo) equipos.recuperar(new Equipo(eq1));
+                        equipo2 = (Equipo) equipos.recuperar(new Equipo(eq2));
+                        equipo1.actualizarEquipo(golesE1, golesE2);
+                        equipo2.actualizarEquipo(golesE2, golesE1);
+                        Partido nuPartido = new Partido(eq1, eq2, instancia, ciudad, estadio, golesE1, golesE2);
+                        partidos.put(nuPartido.getClavePartido(), nuPartido);
+                        System.out.println("El partido fue cargado correctamente");
+                        textoLog = "se cargaron los datos del partido " + eq1 + "-" + eq2;
+                        actualizarLog(textoLog);
+                    } else {
+                        System.out.println("la ciudad " + ciudad + " NO es sede de la copa");
+                    }
+                } else {
+                    System.out.println("la ciudad " + ciudad + " NO se encuentra cargada");
+                }
+
             } else {
                 System.out.println(" el equipo 2 NO se encuentra cargado");
             }

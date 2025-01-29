@@ -21,9 +21,11 @@ public class Carga {
                 "C:\\Users\\mbero\\Downloads\\TPs\\EstructuraDeDatos\\estructuras\\estructuras\\listas\\ListaCiudades.txt");
         lector = new BufferedReader(archivoLectura);
         String linea, valor, nombreCiudad = "";
-        boolean alojamiento = false, sedeCopa = false;
+        boolean alojamiento, sedeCopa;
         while ((linea = lector.readLine()) != null) {
             split = new StringTokenizer(linea, ";");
+            alojamiento = false;
+            sedeCopa = false;
             for (int j = 0; j < 3; j++) {
                 valor = (String) split.nextElement();
                 if (split.hasMoreElements()) {

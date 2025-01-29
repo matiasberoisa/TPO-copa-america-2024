@@ -1,4 +1,1 @@
 INICIO DEL SISTEMA
-se elimino la ciudad los angeles
-se elimino la ciudad chicago
-se elimino la ciudad washington
