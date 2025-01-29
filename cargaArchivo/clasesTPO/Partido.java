@@ -87,7 +87,8 @@ public class Partido {
     }
 
     public String toString() {
-        return eq1 + ";" + eq2 + ";" + instancia + ";" + ciudad + ";" + estadio + ";" + golesE1 + ";" + golesE2;
+        return eq1 + " [" + golesE1 + " - " + golesE2 + "] " + eq2
+                + " INSTANCIA: " + instancia + ", ciudad: " + ciudad + ", estadio: " + estadio;
     }
 
     public String resultado() {

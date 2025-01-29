@@ -31,31 +31,52 @@ public class menuCopaAmerica {
             opcion = dato.next();
             switch (opcion) {
                 case "1":
-                    verCiudades();
+                    verCiudades();// agregar, eliminar, modificar una ciudad
                     break;
                 case "2":
-                    verEquipos();
+                    verEquipos();// agregar, eliminar, modificar un equipo
                     break;
                 case "3":
-                    verPartidos();
+                    verPartidos();// agregar un partido
                     break;
                 case "4":
-                    consultaEquipos();
+                    consultaEquipos();// mostrar los datos de un pais o una lista de paises
                     break;
                 case "5":
-                    consultaPartidos();
+                    consultaPartidos();// buscar si un partido se jugo entre 2 equipos
                     break;
                 case "6":
-                    consultaViajes();
+                    consultaViajes();// buscar caminos segun una ciudad origen y una ciudad destino
                     break;
                 case "7":
-                    listadoEquipos();
+                    listadoEquipos();// listar los equipos de mayor a menor segun goles a favor
                     break;
                 case "8":
-                    mostrarSistema();
+                    mostrarSistema();// mostrar toString de las distintas estructuras usadas
                     break;
-                case "0":
+                case "0":// guardar en un txt los resultados de las estructuras
                     stop = true;
+                    String log = "ESTRUCTURAS A LA HORA DE FINALIZAR EL SISTEMA\n";
+                    actualizarLog(log);
+                    log = "-------------------------------------------------------------//EQUIPOS//-----------------------------------------------------------------\n";
+                    actualizarLog(log);
+                    Lista listaAux = equipos.listar();
+                    while (!listaAux.esVacia()) {
+                        Equipo aux = (Equipo) listaAux.recuperar(1);
+                        log = aux.datosEquipo();
+                        actualizarLog(log);
+                        listaAux.eliminar(1);
+                    }
+                    log = "-------------------------------------------------------------//MAPA//--------------------------------------------------------------------\n";
+                    actualizarLog(log);
+                    log = ciudades.toString();
+                    actualizarLog(log);
+                    log = "-------------------------------------------------------------//PARTIDOS//----------------------------------------------------------------\n";
+                    actualizarLog(log);
+                    for (Integer indice : partidos.keySet()) {
+                        log = indice + ": " + partidos.get(indice).toString();
+                        actualizarLog(log);
+                    }
                     break;
                 default:
                     System.out.println("opcion invalida. \ningrese nuevamente.");

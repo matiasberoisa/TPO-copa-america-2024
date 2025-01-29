@@ -108,8 +108,9 @@ public class Equipo implements Comparable {
     }
 
     public String datosEquipo() {
-        return "equipo: " + nombrePais + "\npuntos totales: " + puntosTotales + "\ngoles a favor: " + golesFavor
-                + "\ngoles en contra: " + golesContra + "\ndiferencia de goles: " + diferenciaDeGoles();
+        return "equipo: " + nombrePais + " | director tecnico: " + tecnico + " | grupo: " + grupoInicial
+                + " | puntos totales: " + puntosTotales + " | goles a favor: " + golesFavor
+                + " | goles en contra: " + golesContra + " | diferencia de goles: " + diferenciaDeGoles();
     }
 
     public String puntuacion() {
