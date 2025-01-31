@@ -30,6 +30,14 @@ public class Partido {
 
     }
 
+    public Partido(String e1, String e2) {
+        if (e1.compareTo(e2) < 0) {
+            clave = new ClavePartido(e1, e2);
+        } else {
+            clave = new ClavePartido(e2, e1);
+        }
+    }
+
     public String getEquipo1() {
         return this.eq1;
     }

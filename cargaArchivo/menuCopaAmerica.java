@@ -77,6 +77,7 @@ public class menuCopaAmerica {
                         log = indice + ": " + partidos.get(indice).toString();
                         actualizarLog(log);
                     }
+                    System.out.println("SE CIERRA EL SISTEMA");
                     break;
                 default:
                     System.out.println("opcion invalida. \ningrese nuevamente.");
@@ -283,36 +284,40 @@ public class menuCopaAmerica {
             System.out.println("ingrese el nombre del equipo 2:");
             eq2 = dato.nextLine().toUpperCase();
             if (equipos.pertenece(new Equipo(eq2))) {
-                System.out.println("partido entre " + eq1 + " y " + eq2);
-                System.out.println("ingrese la instancia del partido");
-                instancia = dato.nextLine().toUpperCase();
-                System.out.println("ingrese la ciudad donde se jugo el partido");
-                ciudad = dato.nextLine().toLowerCase();
-                if (ciudades.existeVertice(new Ciudad(ciudad))) {
-                    sede = (Ciudad) ciudades.obtenerVertice(new Ciudad(ciudad));
-                    if (sede.sedeCopa()) {
-                        System.out.println("ingrese el estadio donde se jugo el partido");
-                        estadio = dato.nextLine().toLowerCase();
-                        System.out.println("Ingrese la cantidad de goles del equipo 1: " + eq1);
-                        golesE1 = dato.nextInt();
-                        System.out.println("Ingrese la cantidad de goles del equipo 2: " + eq2);
-                        golesE2 = dato.nextInt();
-                        equipo1 = (Equipo) equipos.recuperar(new Equipo(eq1));
-                        equipo2 = (Equipo) equipos.recuperar(new Equipo(eq2));
-                        equipo1.actualizarEquipo(golesE1, golesE2);
-                        equipo2.actualizarEquipo(golesE2, golesE1);
-                        Partido nuPartido = new Partido(eq1, eq2, instancia, ciudad, estadio, golesE1, golesE2);
-                        partidos.put(nuPartido.getClavePartido(), nuPartido);
-                        System.out.println("El partido fue cargado correctamente");
-                        textoLog = "se cargaron los datos del partido " + eq1 + "-" + eq2;
-                        actualizarLog(textoLog);
-                    } else {
-                        System.out.println("la ciudad " + ciudad + " NO es sede de la copa");
-                    }
+                Partido unPartido = new Partido(eq1, eq2);
+                if (partidos.containsKey(unPartido.getClavePartido())) {
+                    System.out.println("el partido ya se encuentra cargado");
                 } else {
-                    System.out.println("la ciudad " + ciudad + " NO se encuentra cargada");
+                    System.out.println("partido entre " + eq1 + " y " + eq2);
+                    System.out.println("ingrese la instancia del partido");
+                    instancia = dato.nextLine().toUpperCase();
+                    System.out.println("ingrese la ciudad donde se jugo el partido");
+                    ciudad = dato.nextLine().toLowerCase();
+                    if (ciudades.existeVertice(new Ciudad(ciudad))) {
+                        sede = (Ciudad) ciudades.obtenerVertice(new Ciudad(ciudad));
+                        if (sede.sedeCopa()) {
+                            System.out.println("ingrese el estadio donde se jugo el partido");
+                            estadio = dato.nextLine().toLowerCase();
+                            System.out.println("Ingrese la cantidad de goles del equipo 1: " + eq1);
+                            golesE1 = dato.nextInt();
+                            System.out.println("Ingrese la cantidad de goles del equipo 2: " + eq2);
+                            golesE2 = dato.nextInt();
+                            equipo1 = (Equipo) equipos.recuperar(new Equipo(eq1));
+                            equipo2 = (Equipo) equipos.recuperar(new Equipo(eq2));
+                            equipo1.actualizarEquipo(golesE1, golesE2);
+                            equipo2.actualizarEquipo(golesE2, golesE1);
+                            Partido nuPartido = new Partido(eq1, eq2, instancia, ciudad, estadio, golesE1, golesE2);
+                            partidos.put(nuPartido.getClavePartido(), nuPartido);
+                            System.out.println("El partido fue cargado correctamente");
+                            textoLog = "se cargaron los datos del partido " + eq1 + "-" + eq2;
+                            actualizarLog(textoLog);
+                        } else {
+                            System.out.println("la ciudad " + ciudad + " NO es sede de la copa");
+                        }
+                    } else {
+                        System.out.println("la ciudad " + ciudad + " NO se encuentra cargada");
+                    }
                 }
-
             } else {
                 System.out.println(" el equipo 2 NO se encuentra cargado");
             }
@@ -429,7 +434,7 @@ public class menuCopaAmerica {
                         break;
                     case "4":
                         System.out.println("todos los posibles caminos desde " + origen + " hasta " + destino + ":");
-                        caminos = ciudades.todosLosCaminos(ciudadOrigen, ciudadDestino, null, "");
+                        caminos = ciudades.todosLosCaminos(ciudadOrigen, ciudadDestino);
                         for (int i = 1; i <= caminos.longitud(); i++) {
                             System.out.println("camino " + i + ") " + caminos.recuperar(i).toString());
                         }
@@ -441,8 +446,7 @@ public class menuCopaAmerica {
                             switch (filtro) {
                                 case "A":
                                     System.out.println("caminos filtrados segun alojamiento:");
-                                    caminos = ciudades.todosLosCaminos(ciudadOrigen, ciudadDestino, null,
-                                            filtro);
+                                    caminos = ciudades.todosCaminosConAlojamiento(caminos);
                                     for (int i = 1; i <= caminos.longitud(); i++) {
                                         System.out.println("camino " + i + ") " + caminos.recuperar(i).toString());
                                     }
@@ -454,8 +458,7 @@ public class menuCopaAmerica {
                                     ciudadIncluida = new Ciudad(ciudad);
                                     if (ciudades.existeVertice(ciudadIncluida)) {
                                         System.out.println("caminos filtrados que pasen por " + ciudad + ":");
-                                        caminos = ciudades.todosLosCaminos(ciudadOrigen, ciudadDestino, ciudadIncluida,
-                                                filtro);
+                                        caminos = ciudades.todosCaminosPorCiudad(caminos, ciudadIncluida);
                                         for (int i = 1; i <= caminos.longitud(); i++) {
                                             System.out.println("camino " + i + ") " + caminos.recuperar(i).toString());
                                         }
