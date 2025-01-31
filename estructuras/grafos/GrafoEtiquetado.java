@@ -528,12 +528,12 @@ public class GrafoEtiquetado {
     }
 
     public Lista todosCaminosConAlojamiento(Lista listadoCaminos) {
-        int j = 1;
+        int j = 2;
         boolean encontrado;
         for (int i = 1; i <= listadoCaminos.longitud(); i++) {
             Lista camino = (Lista) listadoCaminos.recuperar(i);
             encontrado = false;
-            while (j <= camino.longitud() && !encontrado) {
+            while (j < camino.longitud() && !encontrado) {
                 Ciudad ciudadActual = (Ciudad) camino.recuperar(j);
                 if (ciudadActual.tieneAlojamiento()) {
                     encontrado = true;
