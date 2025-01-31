@@ -538,10 +538,10 @@ public class GrafoEtiquetado {
                 if (ciudadActual.tieneAlojamiento()) {
                     encontrado = true;
                 }
-                if (!encontrado) {
-                    listadoCaminos.eliminar(i);
-                }
                 j++;
+            }
+            if (!encontrado) {
+                listadoCaminos.eliminar(i);
             }
         }
         return listadoCaminos;
