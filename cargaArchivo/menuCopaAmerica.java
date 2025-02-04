@@ -446,7 +446,7 @@ public class menuCopaAmerica {
                             switch (filtro) {
                                 case "A":
                                     System.out.println("caminos filtrados segun alojamiento:");
-                                    caminos = ciudades.todosCaminosConAlojamiento(caminos);
+                                    todosCaminosConAlojamiento(caminos);
                                     for (int i = 1; i <= caminos.longitud(); i++) {
                                         System.out.println("camino " + i + ") " + caminos.recuperar(i).toString());
                                     }
@@ -458,7 +458,7 @@ public class menuCopaAmerica {
                                     ciudadIncluida = new Ciudad(ciudad);
                                     if (ciudades.existeVertice(ciudadIncluida)) {
                                         System.out.println("caminos filtrados que pasen por " + ciudad + ":");
-                                        caminos = ciudades.todosCaminosPorCiudad(caminos, ciudadIncluida);
+                                        todosCaminosPorCiudad(caminos, ciudadIncluida);
                                         for (int i = 1; i <= caminos.longitud(); i++) {
                                             System.out.println("camino " + i + ") " + caminos.recuperar(i).toString());
                                         }
@@ -534,6 +534,37 @@ public class menuCopaAmerica {
             w.write("INICIO DEL SISTEMA\r\n");
         } catch (IOException ex) {
             System.err.println("Error leyendo o escribiendo en algun archivo.");
+        }
+    }
+
+    // metodos para filtrar caminos
+
+    public static void todosCaminosPorCiudad(Lista todosCaminos, Ciudad ciudad) {
+        for (int i = 1; i <= todosCaminos.longitud(); i++) {
+            Lista camino = (Lista) todosCaminos.recuperar(i);
+            if (camino.localizar(ciudad) < 0) {
+                todosCaminos.eliminar(i);
+            }
+        }
+    }
+
+    public static void todosCaminosConAlojamiento(Lista listadoCaminos) {
+        int j;
+        boolean encontrado;
+        for (int i = 1; i <= listadoCaminos.longitud(); i++) {
+            Lista camino = (Lista) listadoCaminos.recuperar(i);
+            encontrado = false;
+            j = 2;
+            while (j < camino.longitud() && !encontrado) {
+                Ciudad ciudadActual = (Ciudad) camino.recuperar(j);
+                if (ciudadActual.tieneAlojamiento()) {
+                    encontrado = true;
+                }
+                j++;
+            }
+            if (!encontrado) {
+                listadoCaminos.eliminar(i);
+            }
         }
     }
 }
