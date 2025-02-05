@@ -118,6 +118,12 @@ public class ArbolAVL {
                 exito = eliminarAux(this.raiz, elemento);
                 this.raiz = analizarBalance(this.raiz);
             }
+            if (obtenerBalance(raiz) == 2) {
+                this.raiz = rotacionSimpleDerecha(raiz);
+            }
+            if (obtenerBalance(raiz) == -2) {
+                this.raiz = rotacionSimpleIzquierda(raiz);
+            }
         }
         return exito;
     }
@@ -137,13 +143,13 @@ public class ArbolAVL {
                         } else {
                             borrarNodo(hijo);
                             n.setIzquierdo(analizarBalance(hijo));
-
                         }
                     } else {
                         exito = eliminarAux(n.getIzquierdo(), elemento);
                         n.setIzquierdo(analizarBalance(n.getIzquierdo()));
 
                     }
+
                 }
             } else {
                 if (n.getDerecho() != null) {
@@ -158,13 +164,16 @@ public class ArbolAVL {
                             n.setDerecho(analizarBalance(hijo));
 
                         }
+
                     } else {
                         exito = eliminarAux(n.getDerecho(), elemento);
                         n.setDerecho(analizarBalance(n.getDerecho()));
 
                     }
+
                 }
             }
+
         }
         return exito;
     }
@@ -176,6 +185,7 @@ public class ArbolAVL {
             if (n.getDerecho().getDerecho() == null) {
                 candidato = n.getDerecho().getElem();
                 n.setDerecho(n.getDerecho().getIzquierdo());
+
             } else {
                 candidato = buscarCandidato(n.getDerecho());
                 n.setDerecho(n.getDerecho());
@@ -203,6 +213,7 @@ public class ArbolAVL {
             }
         }
         n.recalcularAltura();
+
     }
 
     private NodoAVL rotacionSimpleDerecha(NodoAVL pivote) {
