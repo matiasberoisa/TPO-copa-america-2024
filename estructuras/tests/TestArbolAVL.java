@@ -37,12 +37,6 @@ public class TestArbolAVL {
         arbol.insertar(30);
         arbol.insertar(200);
         arbol.insertar(400);
-        arbol.insertar(500);
-        arbol.insertar(180);
-        arbol.insertar(425);
-        arbol.insertar(600);
-        arbol.insertar(280);
-        arbol.insertar(220);
 
         System.out.println(arbol.toString());
 

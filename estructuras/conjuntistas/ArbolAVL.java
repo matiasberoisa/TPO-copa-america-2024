@@ -114,15 +114,15 @@ public class ArbolAVL {
                 } else {
                     borrarNodo(this.raiz);
                 }
+                if (obtenerBalance(raiz) == 2) {
+                    this.raiz = rotacionSimpleDerecha(raiz);
+                }
+                if (obtenerBalance(raiz) == -2) {
+                    this.raiz = rotacionSimpleIzquierda(raiz);
+                }
             } else {
                 exito = eliminarAux(this.raiz, elemento);
                 this.raiz = analizarBalance(this.raiz);
-            }
-            if (obtenerBalance(raiz) == 2) {
-                this.raiz = rotacionSimpleDerecha(raiz);
-            }
-            if (obtenerBalance(raiz) == -2) {
-                this.raiz = rotacionSimpleIzquierda(raiz);
             }
         }
         return exito;
@@ -249,23 +249,18 @@ public class ArbolAVL {
 
     private String privateToString(NodoAVL n) {
         String cad = "";
-
-        if (n.getIzquierdo() != null) {
-            cad = cad + privateToString(n.getIzquierdo());
-
+        if (n != null) {
+            cad += "(" + n.getElem().toString() + ")";
+            if (n.getIzquierdo() != null) {
+                cad = cad + " HI: " + n.getIzquierdo().getElem().toString();
+            }
+            if (n.getDerecho() != null) {
+                cad = cad + " HD : " + n.getDerecho().getElem().toString();
+            }
+            cad = cad + " balance: " + obtenerBalance(n) + " altura: " + n.getAltura() + "\n";
+            cad += privateToString(n.getIzquierdo());
+            cad += privateToString(n.getDerecho());
         }
-        cad += " elemento: " + n.getElem().toString();
-        if (n.getIzquierdo() != null) {
-            cad = cad + " HI: " + n.getIzquierdo().getElem().toString();
-        }
-        if (n.getDerecho() != null) {
-            cad = cad + " HD : " + n.getDerecho().getElem().toString();
-        }
-        cad = cad + " balance: " + obtenerBalance(n) + " altura: " + n.getAltura() + "\n";
-        if (n.getDerecho() != null) {
-            cad = cad + privateToString(n.getDerecho());
-        }
-
         return cad;
     }
 
