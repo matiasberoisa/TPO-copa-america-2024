@@ -70,16 +70,20 @@ public class ArbolAVL {
         NodoAVL nuevaRaiz = n;
         if (obtenerBalance(n) == 2) {
             if (obtenerBalance(n.getIzquierdo()) >= 0) {
+                // rotacion simple derecha
                 nuevaRaiz = rotacionSimpleDerecha(n);
             } else {
+                // rotacion doble izquierda-derecha
                 n.setIzquierdo(rotacionSimpleIzquierda(n.getIzquierdo()));
                 nuevaRaiz = rotacionSimpleDerecha(n);
             }
         }
         if (obtenerBalance(n) == -2) {
             if (obtenerBalance(n.getDerecho()) <= 0) {
+                // rotacion simple izquierda
                 nuevaRaiz = rotacionSimpleIzquierda(n);
             } else {
+                // rotacion doble derecha-izquierda
                 n.setDerecho(rotacionSimpleDerecha(n.getDerecho()));
                 nuevaRaiz = rotacionSimpleIzquierda(n);
             }
@@ -103,6 +107,19 @@ public class ArbolAVL {
         return balance;
     }
 
+    private void balancear(NodoAVL nodoActual) {
+        if (nodoActual != null) {
+            if (nodoActual.getIzquierdo() != null) {
+                nodoActual.setIzquierdo(analizarBalance(nodoActual.getIzquierdo()));
+                balancear(nodoActual.getIzquierdo());
+                if (nodoActual.getDerecho() != null) {
+                    nodoActual.setDerecho(analizarBalance(nodoActual.getDerecho()));
+                    balancear(nodoActual.getDerecho());
+                }
+            }
+        }
+    }
+
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public boolean eliminar(Comparable elemento) {
         boolean exito = false;
@@ -113,28 +130,11 @@ public class ArbolAVL {
                     this.raiz = null;
                 } else {
                     borrarNodo(this.raiz);
-                    if (obtenerBalance(raiz) == 2) {
-                        this.raiz = rotacionSimpleDerecha(raiz);
-                    }
-                    if (obtenerBalance(raiz) == -2) {
-                        this.raiz = rotacionSimpleIzquierda(raiz);
-                    }
-                }
-                if (obtenerBalance(raiz) == 2) {
-                    this.raiz = rotacionSimpleDerecha(raiz);
-                }
-                if (obtenerBalance(raiz) == -2) {
-                    this.raiz = rotacionSimpleIzquierda(raiz);
+                    balancear(this.raiz);
                 }
             } else {
                 exito = eliminarAux(this.raiz, elemento);
                 this.raiz = analizarBalance(this.raiz);
-            }
-            if (obtenerBalance(raiz) == 2) {
-                this.raiz = rotacionSimpleDerecha(raiz);
-            }
-            if (obtenerBalance(raiz) == -2) {
-                this.raiz = rotacionSimpleIzquierda(raiz);
             }
         }
         return exito;
@@ -197,7 +197,6 @@ public class ArbolAVL {
             if (n.getDerecho().getDerecho() == null) {
                 candidato = n.getDerecho().getElem();
                 n.setDerecho(n.getDerecho().getIzquierdo());
-
             } else {
                 candidato = buscarCandidato(n.getDerecho());
                 n.setDerecho(n.getDerecho());

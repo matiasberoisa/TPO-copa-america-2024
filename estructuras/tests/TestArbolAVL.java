@@ -30,17 +30,36 @@ public class TestArbolAVL {
          * arbol.insertar(5);arbol.insertar(-4);
          * arbol.insertar(-1);
          */
-        arbol.insertar(300);
-        arbol.insertar(150);
-        arbol.insertar(450);
-        arbol.insertar(100);
-        arbol.insertar(30);
-        arbol.insertar(200);
-        arbol.insertar(400);
+        arbol.insertar(7000);
+        arbol.insertar(5000);
+        arbol.insertar(8000);
+        arbol.insertar(4000);
+        arbol.insertar(7500);
+        arbol.insertar(6000);
+        arbol.insertar(9000);
+        arbol.insertar(3000);
+        arbol.insertar(7300);
+        arbol.insertar(4500);
+        arbol.insertar(7800);
+        arbol.insertar(5500);
+        arbol.insertar(8500);
+        arbol.insertar(6500);
+        arbol.insertar(9500);
+        arbol.insertar(1200);
+        arbol.insertar(7600);
+        arbol.insertar(3700);
+        arbol.insertar(8200);
+        arbol.insertar(4800);
+        arbol.insertar(8700);
+        arbol.insertar(6300);
+        arbol.insertar(9800);
+        arbol.insertar(1300);
+        arbol.insertar(8300);
 
         System.out.println(arbol.toString());
 
-        arbol.eliminar(150);
+        arbol.eliminar(7000);
+
         System.out.println(arbol.toString());
 
         // balance = alturaNodoIzq - alturaNodoDer
