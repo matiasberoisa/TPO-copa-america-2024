@@ -165,7 +165,6 @@ public class GrafoEtiquetado {
             siguiente = nodoBuscado.getPrimerAdy();
             // elimino primero los enlaces
             while (siguiente != null) {
-                eliminarEnlace(nodoBuscado, siguiente.getVertice(), siguiente.getEtiqueta());
                 eliminarEnlace(siguiente.getVertice(), nodoBuscado, siguiente.getEtiqueta());
                 siguiente = siguiente.getSigAdyacente();
             }
