@@ -113,12 +113,12 @@ public class ArbolAVL {
                     this.raiz = null;
                 } else {
                     borrarNodo(this.raiz);
-                }
-                if (obtenerBalance(raiz) == 2) {
-                    this.raiz = rotacionSimpleDerecha(raiz);
-                }
-                if (obtenerBalance(raiz) == -2) {
-                    this.raiz = rotacionSimpleIzquierda(raiz);
+                    if (obtenerBalance(raiz) == 2) {
+                        this.raiz = rotacionSimpleDerecha(raiz);
+                    }
+                    if (obtenerBalance(raiz) == -2) {
+                        this.raiz = rotacionSimpleIzquierda(raiz);
+                    }
                 }
             } else {
                 exito = eliminarAux(this.raiz, elemento);
