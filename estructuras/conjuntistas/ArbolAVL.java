@@ -114,16 +114,17 @@ public class ArbolAVL {
                 } else {
                     borrarNodo(this.raiz);
                 }
+                if (obtenerBalance(raiz) == 2) {
+                    this.raiz = rotacionSimpleDerecha(raiz);
+                }
+                if (obtenerBalance(raiz) == -2) {
+                    this.raiz = rotacionSimpleIzquierda(raiz);
+                }
             } else {
                 exito = eliminarAux(this.raiz, elemento);
                 this.raiz = analizarBalance(this.raiz);
             }
-            if (obtenerBalance(raiz) == 2) {
-                this.raiz = rotacionSimpleDerecha(raiz);
-            }
-            if (obtenerBalance(raiz) == -2) {
-                this.raiz = rotacionSimpleIzquierda(raiz);
-            }
+
         }
         return exito;
     }
