@@ -130,11 +130,12 @@ public class ArbolAVL {
                     this.raiz = null;
                 } else {
                     borrarNodo(this.raiz);
-                    balancear(this.raiz);
                 }
             } else {
                 exito = eliminarAux(this.raiz, elemento);
-                this.raiz = analizarBalance(this.raiz);
+            }
+            if (exito) {
+                balancear(this.raiz);
             }
         }
         return exito;

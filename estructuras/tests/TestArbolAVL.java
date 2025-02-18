@@ -62,6 +62,14 @@ public class TestArbolAVL {
 
         System.out.println(arbol.toString());
 
+        arbol.eliminar(6500);
+
+        System.out.println(arbol.toString());
+
+        arbol.eliminar(9800);
+
+        System.out.println(arbol.toString());
+
         // balance = alturaNodoIzq - alturaNodoDer
         // alturaHoja = 0
 
