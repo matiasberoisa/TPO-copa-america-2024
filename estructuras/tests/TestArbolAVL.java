@@ -66,7 +66,7 @@ public class TestArbolAVL {
 
         System.out.println(arbol.toString());
 
-        arbol.eliminar(9800);
+        arbol.eliminar(4000);
 
         System.out.println(arbol.toString());
 

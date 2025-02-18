@@ -107,19 +107,6 @@ public class ArbolAVL {
         return balance;
     }
 
-    private void balancear(NodoAVL nodoActual) {
-        if (nodoActual != null) {
-            if (nodoActual.getIzquierdo() != null) {
-                nodoActual.setIzquierdo(analizarBalance(nodoActual.getIzquierdo()));
-                balancear(nodoActual.getIzquierdo());
-                if (nodoActual.getDerecho() != null) {
-                    nodoActual.setDerecho(analizarBalance(nodoActual.getDerecho()));
-                    balancear(nodoActual.getDerecho());
-                }
-            }
-        }
-    }
-
     @SuppressWarnings({ "rawtypes", "unchecked" })
     public boolean eliminar(Comparable elemento) {
         boolean exito = false;
@@ -130,12 +117,11 @@ public class ArbolAVL {
                     this.raiz = null;
                 } else {
                     borrarNodo(this.raiz);
+                    this.raiz = analizarBalance(this.raiz);
                 }
             } else {
                 exito = eliminarAux(this.raiz, elemento);
-            }
-            if (exito) {
-                balancear(this.raiz);
+                this.raiz = analizarBalance(this.raiz);
             }
         }
         return exito;
@@ -175,9 +161,7 @@ public class ArbolAVL {
                         } else {
                             borrarNodo(hijo);
                             n.setDerecho(analizarBalance(hijo));
-
                         }
-
                     } else {
                         exito = eliminarAux(n.getDerecho(), elemento);
                         n.setDerecho(analizarBalance(n.getDerecho()));
@@ -186,23 +170,28 @@ public class ArbolAVL {
 
                 }
             }
-
         }
         return exito;
     }
 
     @SuppressWarnings({ "rawtypes" })
-    private Comparable buscarCandidato(NodoAVL n) {
+    private Comparable buscarCandidato(NodoAVL n, NodoAVL padre) {
         Comparable candidato = null;
         if (n != null) {
             if (n.getDerecho().getDerecho() == null) {
                 candidato = n.getDerecho().getElem();
                 n.setDerecho(n.getDerecho().getIzquierdo());
+
             } else {
-                candidato = buscarCandidato(n.getDerecho());
+                candidato = buscarCandidato(n.getDerecho(), n);
                 n.setDerecho(n.getDerecho());
             }
             n.recalcularAltura();
+            if (padre.getElem().equals(this.raiz.getElem())) {
+                padre.setIzquierdo(analizarBalance(n));
+            } else {
+                padre.setDerecho(analizarBalance(n));
+            }
         }
         return candidato;
     }
@@ -210,7 +199,7 @@ public class ArbolAVL {
     private void borrarNodo(NodoAVL n) {
         if (n.getDerecho() != null && n.getIzquierdo() != null) {
             if (n.getIzquierdo().getDerecho() != null) {
-                n.setElem(buscarCandidato(n.getIzquierdo()));
+                n.setElem(buscarCandidato(n.getIzquierdo(), n));
             } else {
                 n.setElem(n.getIzquierdo().getElem());
                 n.setIzquierdo(n.getIzquierdo().getIzquierdo());
